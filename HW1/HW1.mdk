@@ -1,0 +1,245 @@
+Title         : HW1
+Author        : Y. Konpaku
+Package       : bussproofs
+TeX Header    : \EnableBpAbbreviations
+Logo          : True
+
+~MathDefs
+  \newcommand\A\alpha
+  \newcommand\B\beta
+  \newcommand\CC\gamma
+  \newcommand\VD\Rightarrow
+~
+
+[TITLE]
+
+# QUESTION
+
+1. $\mathbf{Hc}:=\mathbf{Hi}\,\oplus\vdash((\A\to\bot)\to\bot)\to\A$ (DNE).
+    1. Let $\mathbf{Hc'}:=\mathbf{Hi}\,\oplus\vdash\A\lor(\A\to\bot)$ (XM), is $\mathbf{Hc'}$ equivalent to $\mathbf{Hc}$ in terms of provability?
+    2. Let $\mathbf{Hc''}:=\mathbf{Hi}\,\oplus\vdash((\A\to\B)\to\A)\to\A$ (PL), is $\mathbf{Hc''}$ equivalent to $\mathbf{Hc}$ in terms of provability?
+2. Does deduction theorem hold for $\mathbf{Hc}$ with quantifiers?
+3. [Optional *Basic Proof Theory* ex. 2.4.2F] Show that the following axiom schemas and rules yield a Hilbert system for $\mathbf{Ip}$:
+  1. $\A\to\A,$
+  2. if $\A,\A\to\B$ then $\B,$
+  3. if $\A\to\B$ and $\B\to\CC$ then $\A\to\CC,$
+  4. $\A\land\B\to\A,\A\land\B\to\B,$
+  5. $\A\to\A\lor\B,\B\to\A\lor\B,$
+  6. if $\A\to\CC,\B\to\CC$ then $\A\lor\B\to\CC,$
+  7. if $\A\to\B,\A\to\CC$ then $\A\to\B\land\CC,$
+  8. if $\A\land\B\to\CC$ then $\A\to\B\to\CC,$
+  9. if $\A\to\B\to\CC$ then $\A\land\B\to\CC,$
+  10. $\bot\to\A$.
+  
+This is an example of a Hilbert system for propositional logic with more rules than just modus ponens. 
+
+# ANSWER
+
+## Some Remarks on Sequents and Derivability
+There are two kinds of proof calculi of Hilbert style axiomatic system(analogously, of natural deduction): one derives formulas, the other derives derivability judgments, i.e., sequents. Moreover, we can use some notation which highly similar to the sequents to talk about the derivability of a particular proof calculus in the metalanguage. The calculus discussed in class is vague in the sense of if it derives sequents or not. If we regard $\mathbf{H[mic]}$ as a proof calculus deriving formulas and only use $\Gamma\vdash\A$ for the existence of a derivation of $\A$ from $\Gamma$ in $\mathbf{H[mic]}$, it can handle the weakening rule(if $\Gamma\vdash\A$ then $\Gamma,\Delta\vdash\A$) in sense of derivability of formulas in metalanguage very well. But, $\mathbf{H[mic]}$ can also be seen as a calculus derives sequents. In this case, this calculus introduced in *Basic Proof Theory* and exhibited in class lacks some approach to weaken the antecedent --- we can get $\vdash\A\to\B\to\A$ and $\A\to\B\to\A\vdash\A\to\B\to\A$ but never $\A\vdash\A\to\B\to\A$. This can be proved easily by means of structural induction: the axioms have an empty antecedent, (Asm) can only introduce assumptions which contains the conclusion, and ($\to$E) and ($\forall$I) just simply keep the antecedent as it was. If we add a new rule (WK) to it, this lack can be remedied.
+
+~ Snippet
+\begin{prooftree}
+  \AXC{$\Gamma\vdash\A$}
+  \RightLabel{WK}
+  \UIC{$\Gamma,\Delta\vdash\A$}
+\end{prooftree}
+~
+
+In this section, we'd prove that the calculus of sequents with (WK) (denoted as $\mathbf{GH[mic]}$) is equivalent to the calculus of formulas (denoted as $\mathbf{H[mic]}$ in this section) in the sense of $\vdash_G\Gamma\VD\A$ iff $\Gamma\vdash_H\A$ (we use $\vdash_G$ to denote the derivability in $\mathbf{GH[mic]}$, $\vdash_H$ to denote the derivability in $\mathbf{H[mic]}$ and $\VD$ to denote the sequent inside the calculus $\mathbf{GH[mic]}$). Moreover, if this statement holds, we can just simply regard $\mathbf{GH[mic]}$ as a successful formulation of the derivability assertion of $\mathbf{H[mic]}$ and enjoy lots of property of $\vdash_H$ such as the deduction theorem without worries about notation abuse.
+
+~ Proof
+We use induction on the formation rules of the derivation in $\mathbf{GH[mic]}$ and $\mathbf{H[mic]}$ (the validity of this proof does not depend on the amount of axioms) to convert a proof from one system to another.
+
+- $\Rightarrow$:
+  - **BASE (Axioms, Asm)** We simply write the succedent down as a proof in $\mathbf{H[mic]}$. If it is an axiom $\VD\alpha$, we can let the assumption set empty, i.e., $\vdash_H\A$. Otherwise, it must be an assumption $\Gamma,\A\VD\A$, we let $\Gamma\cup\{\A\}$ as the assumption set and consider formulas in $\Gamma$ unused assumptions.
+  - **IND HYPS (WK,$\forall$I,$\to$E)**
+    - **WK** By induction hypothesis, from $\Gamma\VD\A$ we can construct a proof of $\A$ in $\mathbf{H[mic]}$ from assumptions $\Gamma$. Then we can simply add $\Delta$ to the assumption set and do not use these assumptions, which is $\Gamma,\Delta\vdash_H\A$.
+    - **$\forall$I,$\to$E** Simply write down(or concatenate) the proof(s), applying the corresponding rule, and fix the assumption.
+- $\Leftarrow$:
+  - **BASE (Axioms, Asm)** If the length of proof is 1, then there are only two possibilities: the unique formula in this proof is an axiom, or an assumption. So we can utilize the correspond $\mathbf{GH[mic]}$ rules: $\VD\A$ and $\A\VD\A$. Since the assumption $\Gamma$ in $\Gamma\vdash_H\A$ is arbitrary, we must use the rule (WK) to obtain $\Gamma\VD\A$.
+  - **IND HYPS ($\forall$I,$\to$E)** Same as another direction, just simply applying the corresponding rule, and these rules ensure that the assumption sets are same.
+
+Q.E.D
+~
+
+Now we can always use sequent style derivation instead of proofs in $\mathbf{H[mic]}$, this is very convenient when we heavily use the deduction theorem.
+
+## The Answer
+
+We assume the implication operator is right associative and always omit it(e.g., $\A\to\B$ is denoted as $\A\B$).
+
+1. We'd prove that the set of formulas generated by $\mathbf{Hc'}$ and $\mathbf{Hc''}$ are exactly the set of formulas generated by $\mathbf{Hc}$ by means of structural induction.
+
+~ Proof
+The case of all derivation rules and axiom schemas except (DNE), (XM) and (PL) are same, now we use $\mathbf{GHi}$ to prove that from $\mathbf{Hi}$ plus each of later two we can derive (DNE) and vice versa.
+
+  - (XM) $\VD$ (DNE)
+    1. $\VD\A(\neg\neg\A)\A$ (K)
+    - $\neg\A,\neg\neg\A\VD\neg\A$ (Asm)
+    - $\neg\A,\neg\neg\A\VD\neg\neg\A$ (Asm)
+    - $\neg\A,\neg\neg\A\VD\bot$ (MP2 3)
+    - $\VD\bot\A$ (EFQ)
+    - $\neg\A,\neg\neg\A\VD\bot\A$ (WK5)
+    - $\neg\A,\neg\neg\A\VD\A$ (MP4 6)
+    - $\neg\A\VD(\neg\neg\A)\A$ (DT7)
+    - $\VD\neg\A(\neg\neg\A)\A$ (DT8)
+    - $\VD(\A(\neg\neg\A)\A)(\neg\A(\neg\neg\A)\A)((\A\lor\neg\A)(\neg\neg\A)\A)$ ($\lor$E)
+    - $\VD(\neg\A(\neg\neg\A)\A)((\A\lor\neg\A)(\neg\neg\A)\A)$ (MP1 10)
+    - $\VD(\A\lor\neg\A)(\neg\neg\A)\A$ (MP9 11)
+    - $\VD(\A\lor\neg\A)$ (XM)
+    - $\VD(\neg\neg\A)\A$ (MP13 12)
+
+  - (PL) $\VD$ (DNE)
+    1. $\VD((\neg\A)\A)\A$ (PL)
+    - $\neg\neg\A\VD((\neg\A)\A)\A$ (WK1)
+    - $\neg\A,\neg\neg\A\VD\neg\A$ (Asm)
+    - $\neg\A,\neg\neg\A\VD\neg\neg\A$ (Asm)
+    - $\neg\A,\neg\neg\A\VD\bot$ (MP3 4)
+    - $\VD\bot\A$ (EFQ)
+    - $\neg\A,\neg\neg\A\VD\bot\A$ (WK6)
+    - $\neg\A,\neg\neg\A\VD\A$ (MP5 7)
+    - $\neg\neg\A\VD(\neg\A)\A$ (DT8)
+    - $\neg\neg\A\VD\A$ (MP9 2)
+    - $\VD(\neg\neg\A)\A$ (DT10)
+
+  - (DNE) $\VD$ (XM)
+
+  We use $\B$ as an abbreviation for $\A\lor\neg\A$. 
+    1. $\neg\B,\A\VD\A$ (Asm)
+    - $\neg\B,\A\VD\neg\B$ (Asm)
+    - $\VD\A\B$ ($\lor$I)
+    - $\neg\B,\A\VD\A\B$ (WK3)
+    - $\neg\B,\A\VD\B$ (MP1 4)
+    - $\neg\B,\A\VD\bot$ (MP5 2)
+    - $\neg\B\VD\neg\A$ (DT6)
+    - $\VD\neg\A\B$ ($\lor$I)
+    - $\neg\B\VD\neg\A\B$ (WK8)
+    - $\neg\B\VD\B$ (MP7 9)
+    - $\neg\B\VD\neg\B$ (Asm)
+    - $\neg\B\VD\bot$ (MP10 11)
+    - $\VD\neg\neg\B$ (DT12)
+    - $\VD(\neg\neg\B)\B$ (DNE)
+    - $\VD\B$ (MP13 14)
+
+  - (DNE) $\VD$ (PL)
+
+  First we prove a lemma: $\VD\neg\A\A\B$ for any formula $\A,\B$.
+    1. $\neg\A,\A\VD\A$ (Asm)
+    - $\neg\A,\A\VD\neg\A$ (Asm)
+    - $\neg\A,\A\VD\bot$ (MP1 2)
+    - $\VD\bot\B$ (EFQ)
+    - $\neg\A,\A\VD\bot\B$ (WK4)
+    - $\neg\A,\A\VD\B$ (MP3 5)
+    - $\neg\A\VD\A\B$ (DT6)
+    - $\VD\neg\A\A\B$ (DT7)
+  
+  Then we prove the Peirce's Law. We use $\CC$ as an abbreviation for $\A\B$.
+    1. $\VD\neg\A\CC$ (Lemma)
+    - $\CC\A,\neg\A\VD\neg\A\CC$ (WK1)
+    - $\CC\A,\neg\A\VD\neg\A$ (Asm)
+    - $\CC\A,\neg\A\VD\CC\A$ (Asm)
+    - $\CC\A,\neg\A\VD\CC$ (MP3 2)
+    - $\CC\A,\neg\A\VD\A$ (MP5 4)
+    - $\CC\A,\neg\A\VD\bot$ (MP6 3)
+    - $\CC\A\VD\neg\neg\A$ (DT7)
+    - $\VD(\neg\neg\A)\A$ (DNE)
+    - $\CC\A\VD(\neg\neg\A)\A$ (WK9)
+    - $\CC\A\VD\A$ (MP8 16)
+    - $\VD(\CC\A)\A$ (DT11)
+
+Q.E.D
+~
+
+2. Yes, the deduction theorem also holds when we add quantifiers into $\mathbf{Hc}$ (up to $\alpha$-equivalence class).
+
+~ Proof
+We utilize the induction on the formation rules of $\mathbf{GHc}$ to prove that a proof of $\Gamma,\A\VD\B$ can be converted into a proof of $\Gamma\VD\A\to\B$ and vice versa.
+
+- **BASE (Axioms, Asm)**
+  - $\Rightarrow$: Since the axioms do not introduce any assumption, the only case must be $\Gamma,\A\VD\A$. And we already known that $\VD\A\to\A$(see ex. 3), then use weakening we can easily obtained $\Gamma\VD\A\to\A$.
+  - $\Leftarrow$: If we already have $\Gamma\VD\A\to\B$, we can use $\Gamma,\A\VD\A$ (Asm), $\Gamma,\A\VD\A\to\B$ (WK) and ($\to$E) to obtain $\Gamma,\A\VD\B$.
+- **IND HYPS(WK,$\to$E,$\forall$I)**
+  - $\Rightarrow$:
+    - **WK** From induction hypothesis we can transform a derivation of $\Gamma,\A\VD\B$ into a derivation of $\Gamma\VD\A\to\B$. So we can transform the derivation of $\Gamma,\A,\Delta\VD\B$ into a derivation of $\Gamma,\Delta\VD\A\to\B$ by simply weakening the second sequent.
+    - **$\to$E** We need to transform a derivation of $\Gamma,\A\VD\CC$ when we can transform derivations of $\Gamma,\A\VD\B$ and $\Gamma,\A\VD\B\to\CC$ into $\Gamma\VD\A\to\B$ and $\Gamma\VD\A\to(\B\to\CC)$. Obviously, we can utilize the axiom (S) $\VD(\A\to(\B\to\CC))\to(\A\to\B)\to(\A\to\CC)$ and (WK) to implement this.
+    - **$\forall$I** Similarly, we can transform a derivation of $\Gamma,\A\VD\B(a)$ into $\Gamma\VD\A\to\B(a)$ and we need to transform a derivation of $\Gamma,\A\VD\forall x\B(x)$ into a derivation of $\Gamma\VD\A\to\forall x\B(x)$. First we can use ($\forall$I) to obtain $\Gamma\VD\forall x(\A\to\B(x))$ hence $a$ must be free in $\Gamma$ and $\alpha$ or we have no chance to apply this rule to derive the third sequent. Variable $x$ may not free in $\A$ but we can freely change the bound variable if it clashed. And by means of the axiom $\VD\forall x(\A\to\B(x))\to(\A\to\forall y\B(y))$, ($\to$E) and (WK) we can easily obtained $\Gamma\VD\A\to\forall y\B(y)$ and it is syntactically equivalent to $\Gamma\VD\A\to\forall x\B(x)$, which is what we want.
+  - $\Leftarrow$:
+    - **WK,($\to$E)** Same as the base case, just simply utilize (WK) and ($\to$E).
+    - **($\forall$I)** This rule does not derive a (sequent of) implicational formula, and the property is vacuously true.
+
+Q.E.D
+~
+
+3. On the one hand, we prove that any axiom in this system is either provable in $\mathbf{GHip}$ (i.e., with empty assumption set) or an axiom in $\mathbf{GHip}$, and any rule in this system is admissible in $\mathbf{GHip}$ (with arbitrary assumptions). On the other hand, we should also prove that every proof in $\mathbf{GHip}$ can be presented in this system by induction. According to the two aspects above, we can convince that the formulas which can be derived in this system is exactly the formulas in $\mathbf{Ip}$.
+
+~ Proof
+
+
+- $\Rightarrow$:
+  - $\VD\A\to\A$
+    1. $\VD(\A(\A\A)\A)(\A\A\A)(\A\A)$ (S)
+    2. $\VD\A(\A\A)\A$ (K)
+    3. $\VD(\A\A\A)(\A\A)$ (MP2 1)
+    4. $\VD\A\A\A$ (K)
+    5. $\VD\A\A$ (MP4 3)
+  - $\dfrac{\Gamma\VD\A\quad\Gamma\VD\A\B}{\Gamma\VD\B}$
+    - This is exactly the (MP) rule is.
+  - $\dfrac{\Gamma\VD\A\B\quad\Gamma\VD\B\CC}{\Gamma\VD\A\CC}$
+    1. $\Gamma\VD\A\B$ (Premise)
+    2. $\Gamma,\A\VD\A\B$ (WK1)
+    3. $\Gamma,\A\VD\A$ (Asm)
+    4. $\Gamma,\A\VD\B$ (MP3 2)
+    5. $\Gamma\VD\B\CC$ (Premise)
+    6. $\Gamma,\A\VD\B\CC$ (WK5)
+    7. $\Gamma,\A\VD\CC$ (MP4 6)
+    8. $\Gamma\VD\A\CC$ (DT7)
+  - $\VD(\A\land\neg\A)\A$, $\VD(\A\land\neg\A)\neg\A$
+  - $\VD\A(\A\lor\neg\A)$, $\VD\neg\A(\A\lor\neg\A)$
+    - Similarly, they are exactly the ($\land$E) and ($\lor$I) axioms are.
+  - $\dfrac{\Gamma\VD\A\CC\quad\Gamma\VD\B\CC}{\Gamma\VD(\A\lor\B)\CC}$
+    1. $\Gamma\VD\A\CC$ (Premise)
+    2. $\Gamma\VD\B\CC$ (Premise)
+    3. $\VD(\A\CC)(\B\CC)(\A\lor\B)\CC$ ($\lor$E)
+    4. $\Gamma\VD(\A\CC)(\B\CC)(\A\lor\B)\CC$ (WK3)
+    5. $\Gamma\VD(\B\CC)(\A\lor\B)\CC$ (MP1 3)
+    6. $\Gamma\VD(\A\lor\B)\CC$ (MP2 5)
+  - $\dfrac{\Gamma\VD\A\B\quad\Gamma\VD\A\CC}{\Gamma\VD\A(\B\land\CC)}$
+    1. $\VD\B\CC(\B\land\CC)$ ($\land$I)
+    2. $\Gamma,\A\VD\B\CC(\B\land\CC)$ (WK1)
+    3. $\Gamma\VD\A\B$ (Premise)
+    4. $\Gamma,\A\VD\B$ (DT3)
+    5. $\Gamma,\A\VD\CC(\B\land\CC)$ (MP4 2)
+    6. $\Gamma\VD\A\CC$ (Premise)
+    7. $\Gamma,\A\VD\CC$ (DT6)
+    8. $\Gamma,\A\VD\B\land\CC$ (MP7 5)
+    9. $\Gamma\VD\A(\B\land\CC)$ (DT8)
+  - $\dfrac{\Gamma\VD(\A\land\B)\CC}{\Gamma\VD\A\B\CC}$
+    1. $\Gamma,\A,\B\VD\A$ (Asm)
+    2. $\Gamma,\A,\B\VD\B$ (Asm)
+    3. $\VD\A\B(\A\land\B)$ ($\land$I)
+    4. $\Gamma,\A,\B\VD\A\B(\A\land\B)$ (WK3)
+    5. $\Gamma,\A,\B\VD\B(\A\land\B)$ (MP1 4)
+    6. $\Gamma,\A,\B\VD\A\land\B$  ( MP2 5)
+    7. $\Gamma\VD(\A\land\B)\CC$ (Premise)
+    8. $\Gamma,\A,\B\VD(\A\land\B)\CC$ (WK7)
+    9. $\Gamma,\A,\B\VD\CC$ (MP6 8)
+    10. $\Gamma,\A\VD\B\CC$ (DT9)
+    11. $\Gamma\VD\A\B\CC$ (DT10)
+  - $ \dfrac{\Gamma\VD\A\B\CC}{\Gamma\VD(\A\land\B)\CC}$
+    1. $\Gamma,\A\land\B\VD\A\land\B$ (Asm)
+    2. $\VD(\A\land\B)\A$ ($\land$E)
+    3. $\Gamma,\A\land\B\VD(\A\land\B)\A$ (WK2)
+    4. $\Gamma,\A\land\B\VD\A$ (MP1 3)
+    5. $\VD(\A\land\B)\B$ ($\land$E)
+    6. $\Gamma,\A\land\B\VD(\A\land\B)\B$ (WK5)
+    7. $\Gamma,\A\land\B\VD\B$ (MP1 6)
+    8. $\Gamma\VD\A\B\CC$ (Premise)
+    9. $\Gamma,\A\land\B\VD\A\B\CC$ (WK8)
+    10. $\Gamma,\A\land\B\VD\B\CC$ (MP4 9)
+    11. $\Gamma,\A\land\B\VD\CC$ (MP7 10)
+    12. $\Gamma\VD(\A\land\B)\CC$ (DT11)
+  - $\VD\bot\A$
+    - This is The Principle of Explosion(EFQ).
+- $\Leftarrow$: [Incomplete]
+~
