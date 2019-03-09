@@ -1,0 +1,235 @@
+Title         : HW2
+Author        : Y. Konpaku
+Package       : bussproofs
+TeX Header    : \EnableBpAbbreviations
+Logo          : True
+
+~MathDefs
+  \newcommand\A\varphi
+  \newcommand\B\psi
+  \newcommand\CC\chi
+  \newcommand\VD\Rightarrow
+  \newcommand\VDP[1]{\vdash_\mathbf{#1}}
+  \newcommand\NVDP[1]{\nvdash_\mathbf{#1}}
+~
+
+[TITLE]
+
+# QUESTION
+
+1. Prove that $\VDP{Nm}((((\A\to\B)\to\A)\to\A)\to\B)\to\B$.
+2. Prove the De Morgan's Law in $\mathbf{Ni}$ if it holds or give a counter-model (in Kripke semantics) if it not hold.
+3. Prove that $\VDP{Ni}\neg\neg\neg\A\to\neg\A$.
+4. Prove that $\VDP{Ni}\neg\neg(\A\to\B)\to(\neg\neg\A\to\neg\neg\B)$ and $\VDP{Ni}(\neg\neg\A\to\neg\neg\B)\to\neg\neg(\A\to\B)$.
+5. Prove that $\VDP{Ni}\neg\neg\forall x\A(x)\to\forall x\neg\neg\A(x)$.
+
+# ANSWER
+
+2.
+In this section we use the jargon "De Morgan's Law" in the sense of derivability in a particular proof calculus $\mathbf{Ni}$, i.e., $\neg(\A\lor\B)\VDP{Ni}\neg\A\land\neg\B$ and so forth. The only one which not hold in $\mathbf{Ni}$ is $\neg(\A\land\B)\vdash\neg\A\lor\neg\B$. First we shall construct a counter-model $\mathcal{W}=(W,\prec,\Vdash)$ which satisfies $\neg(\A\land\B)$ but not $\neg\A\lor\neg\B$, then prove the other three in $\mathbf{Ni}$.
+
+- Consider a frame $W=\{x,y,z\}, x\prec y, x\prec z$ and $y\nmid z$. We let $x$ does not satisfy both $\A$ and $\B$, $y$ satisfies $\A$ but not $\B$ and $z$ satisfies $\B$ but not $\A$. Obviously, for any point $w\in W$ either $w\nVdash\A$ or $w\nVdash\B$ holds, which is $w\nVdash\A\land\B$. From this we can conclude that for every successor $w'$ of any point $w$ that $w'\nVdash\A\land\B$, i.e., $\mathcal{W}$ satisfies $\neg(\A\land\B)$. If we assume $\mathcal{W}$ satisfies $\neg\A\lor\neg\B$, we must accept that for any point $w$ either $\forall w'\succeq w(w'\nVdash\A)$ or $\forall w'\succeq w(w'\nVdash\B)$ holds, but this leads to a contradiction hence $y,z\succeq x$ but $y\Vdash\A$ and $z\Vdash\B$.
+
+- $\neg\A\land\neg\B\VDP{Ni}\neg(\A\lor\B)$
+~Snippet
+\begin{prooftree}
+    \AXC{$[\A\lor\B]^u$}
+    \AXC{$\neg\A\land\neg\B$}
+    \RightLabel{$\land$E}
+    \UIC{$\neg\A$}
+    \AXC{$[\A]^v$}
+    \RightLabel{$\to$E}
+    \BIC{$\bot$}
+    \AXC{$\neg\A\land\neg\B$}
+    \RightLabel{$\land$E}
+    \UIC{$\neg\B$}
+    \AXC{$[\B]^w$}
+    \RightLabel{$\to$E}
+    \BIC{$\bot$}
+    \LeftLabel{$v,w$}
+    \RightLabel{$\lor$E}
+    \TIC{$\bot$}
+    \LeftLabel{$u$}
+    \RightLabel{$\to$I}
+    \UIC{$\neg(\A\lor\B)$}
+\end{prooftree}
+~
+
+- $\neg(\A\lor\B)\VDP{Ni}\neg\A\land\neg\B$
+~Snippet
+\begin{prooftree}
+  \AXC{$[\A]^u$}
+  \RightLabel{$\lor$I}
+  \UIC{$\A\lor\B$}
+  \AXC{$\neg(\A\lor\B)$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$u$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\A$}
+  \AXC{$[\B]^v$}
+  \RightLabel{$\lor$I}
+  \UIC{$\A\lor\B$}
+  \AXC{$\neg(\A\lor\B)$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$v$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\B$}
+  \RightLabel{$\land$I}
+  \BIC{$\neg\A\land\neg\B$}
+\end{prooftree}
+~
+
+- $\neg\A\lor\neg\B\VDP{Ni}\neg(\A\land\B)$
+~Snippet
+\begin{prooftree}
+  \AXC{$\neg\A\lor\neg\B$}
+  \AXC{$[\neg\A]^u$}
+  \AXC{$[\A\land\B]^w$}
+  \RightLabel{$\land$E}
+  \UIC{$\A$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \AXC{$[\neg\B]^v$}
+  \AXC{$[\A\land\B]^w$}
+  \RightLabel{$\land$E}
+  \UIC{$\B$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$u,v$}
+  \RightLabel{$\lor$E}
+  \TIC{$\bot$}
+  \LeftLabel{$w$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg(\A\land\B)$}
+\end{prooftree}
+~
+
+3.
+~Snippet
+\begin{prooftree}
+   \AXC{$[\A]^u$}
+   \AXC{$[\neg\A]^v$}
+   \RightLabel{$\to$E}
+   \BIC{$\bot$}
+   \LeftLabel{$v$}
+   \RightLabel{$\to$I}
+   \UIC{$\neg\neg\A$}
+   \AXC{$[\neg\neg\neg\A]^w$}
+   \RightLabel{$\to$E}
+   \BIC{$\bot$}
+   \LeftLabel{$u$}
+   \RightLabel{$\to$I}
+   \UIC{$\neg\A$}
+   \LeftLabel{$w$}
+   \RightLabel{$\to$I}
+   \UIC{$\neg\neg\neg\A\to\neg\A$}
+\end{prooftree}
+~
+
+4.
+
+-  
+
+~ Snippet
+\begin{prooftree}
+  \AXC{$[\A\to\B]^u$}
+  \AXC{$[\A]^v$}
+  \RightLabel{$\to$E}
+  \BIC{$\B$}
+  \AXC{$[\neg\B]^w$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$u$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg(\A\to\B)$}
+  \AXC{$[\neg\neg(\A\to\B)]^x$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$v$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\A$}
+  \AXC{$[\neg\neg\A]^y$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$w$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\neg\B$}
+  \LeftLabel{$y$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\neg\A\to\neg\neg\B$}
+  \LeftLabel{$x$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\neg(\A\to\B)\to(\neg\neg\A\to\neg\neg\B)$}
+\end{prooftree}
+~
+
+- We omit the implication operator $\to$ to save space.
+  
+~ Snippet
+\begin{prooftree}
+  \AXC{$[\neg\A]^u$}
+  \AXC{$[\A]^v$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \RightLabel{$\bot\mathbf{i}$}
+  \UIC{$\B$}
+  \LeftLabel{$v$}
+  \RightLabel{$\to$I}
+  \UIC{$\A\B$}
+  \AXC{$[\neg(\A\B)]^\tau$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$u$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\neg\A$}
+  \AXC{$[\neg\neg\A\neg\neg\B]^\sigma$}
+  \RightLabel{$\to$E}
+  \BIC{$\neg\neg\B$}
+  \AXC{$[\B]^w$}
+  \LeftLabel{$\mu$}
+  \RightLabel{$\to$I}
+  \UIC{$\A\B$}
+  \AXC{$[\neg(\A\B)]^\tau$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$w$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\B$}
+  \RightLabel{$\to$E}
+  \BIC{$\bot$}
+  \LeftLabel{$\tau$}
+  \RightLabel{$\to$I}
+  \UIC{$\neg\neg(\A\B)$}
+  \LeftLabel{$\sigma$}
+  \RightLabel{$\to$I}
+  \UIC{$(\neg\neg\A\neg\neg\B)\neg\neg(\A\B)$}
+\end{prooftree}
+~
+
+5.
+~Snippet
+\begin{prooftree}
+    \AXC{$[\forall x\A(x)]^u$}
+    \RightLabel{$\forall$E}
+    \UIC{$\A(a)$}
+    \AXC{$[\neg\A(a)]^v$}
+    \RightLabel{$\to$E}
+    \BIC{$\bot$}
+    \LeftLabel{$u$}
+    \RightLabel{$\to$I}
+    \UIC{$\neg\forall x\A(x)$}
+    \AXC{$[\neg\neg\forall x\A(x)]^w$}
+    \RightLabel{$\to$E}
+    \BIC{$\bot$}
+    \LeftLabel{$v$}
+    \RightLabel{$\to$I}
+    \UIC{$\neg\neg\A(a)$}
+    \RightLabel{$\forall$I}
+    \UIC{$\forall x\neg\neg\A(x)$}
+    \LeftLabel{$w$}
+    \RightLabel{$\to$I}
+    \UIC{$\neg\neg\forall x\A(x)\to\forall x\neg\neg\A(x)$}
+\end{prooftree}
+~
