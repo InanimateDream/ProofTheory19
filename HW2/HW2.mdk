@@ -1,5 +1,6 @@
 Title         : HW2
 Author        : Y. Konpaku
+Package       : [a4paper, margin=15mm]geometry
 Package       : bussproofs
 TeX Header    : \EnableBpAbbreviations
 Logo          : True
@@ -24,6 +25,31 @@ Logo          : True
 5. Prove that $\VDP{Ni}\neg\neg\forall x\A(x)\to\forall x\neg\neg\A(x)$.
 
 # ANSWER
+1.[Incomplete]
+~ Snippet
+\begin{prooftree}
+  \AXC{$[\A\to\B]^u$}
+  \AXC{$[(\A\to\B)\to\A]^v$}
+  \RightLabel{$\to$E}
+  \BIC{$\A$}
+  \AXC{$[\A\to\B]^u$}
+  \RightLabel{$\to$E}
+  \BIC{$\B$}
+  \LeftLabel{$v$}
+  \RightLabel{$\to$I}
+  \UIC{$((\A\to\B)\to\A)\to\B$}
+  \AXC{$[(((\A\to\B)\to\A)\to\B)\to\B]^w$}
+  \RightLabel{$\to$E}
+  \BIC{$\B$}
+  \LeftLabel{$u$}
+  \RightLabel{$\to$I}
+  \UIC{$(\A\to\B)\to\B$}
+  \LeftLabel{$w$}
+  \RightLabel{$\to$I}
+  \UIC{$((((\A\to\B)\to\A)\to\B)\to\B)\to(\A\to\B)\to\B$}
+\end{prooftree}
+~
+
 
 2.
 In this section we use the jargon "De Morgan's Law" in the sense of derivability in a particular proof calculus $\mathbf{Ni}$, i.e., $\neg(\A\lor\B)\VDP{Ni}\neg\A\land\neg\B$ and so forth. The only one which not hold in $\mathbf{Ni}$ is $\neg(\A\land\B)\vdash\neg\A\lor\neg\B$. First we shall construct a counter-model $\mathcal{W}=(W,\prec,\Vdash)$ which satisfies $\neg(\A\land\B)$ but not $\neg\A\lor\neg\B$, then prove the other three in $\mathbf{Ni}$.
