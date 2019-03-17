@@ -1,0 +1,257 @@
+Title         : HW3
+Author        : Y. Konpaku
+Package       : [a4paper, margin=15mm]geometry
+Package       : bussproofs
+TeX Header    : \EnableBpAbbreviations
+Logo          : True
+
+~MathDefs
+  \newcommand\A\varphi
+  \newcommand\B\psi
+  \newcommand\CC\chi
+  \newcommand\VD\Rightarrow
+  \newcommand\EFQ{\bot_\mathbf{i}}
+  \newcommand\RAA{\bot_\mathbf{c}}
+  \newcommand\VDP[1]{\vdash_\mathbf{#1}}
+  \newcommand\NVDP[1]{\nvdash_\mathbf{#1}}
+~
+
+[TITLE]
+
+# QUESTION
+
+1. [*Basic Proof Theory* Lemma 2.3.2] For $\A$ negative, $\mathbf{M}\vdash\A\leftrightarrow\neg\neg\A$.
+
+2. [*Basic Proof Theory* Ex. 2.3.6A] Show that in $\mathbf{Ni}$ all instances of $\EFQ$ are derivable from the instances of $\EFQ$ with atomic conclusion. Show that in $\mathbf{Nc}$, for the language without $\lor, \exists,$ all instances of $\RAA$ are derivable from instances $\RAA$ with atomic conclusion.
+
+# ANSWER
+
+1. We use induction on the formation rules of negative formulas. Note that for any formula $\A$ that $\mathbf{M}\vdash\A\to\neg\neg\A$ always holds, so we only need to prove $\mathbf{M}\vdash\neg\neg\A\to\A$ for $\A$ negative. We shall choose $\mathbf{Nm}$ as the formulation of minimal logic to prove this result for it equivalent to $\mathbf{Hm}$.
+  - **BASE ($\bot$, $\neg p$ for $p$ atomic)**
+    - $\bot$
+      ~ Snippet
+        \begin{prooftree}
+            \AXC{$[\bot]^u$}
+            \LeftLabel{$u$}
+            \RightLabel{$\to$I}
+            \UIC{$\neg\bot$}
+            \AXC{$[\neg\neg\bot]^v$}
+            \RightLabel{$\to$E}
+            \BIC{$\bot$}
+            \LeftLabel{$v$}
+            \RightLabel{$\to$I}
+            \UIC{$\neg\neg\bot\to\bot$}
+        \end{prooftree}
+      ~
+    - $\neg p$ Same as HW2.3
+  - **IND HYPS ($\A\land\B,\A\to\B,\forall x\A$ for $\A,\B$ negative)** By induction hypothesis $\mathbf{M}\vdash\neg\neg\A\to\A$ and $\mathbf{M}\vdash\neg\neg\B\to\B$ holds, and we will show that these connectives and quantifiers preserve this property.
+  
+    - We merge the two similar branches of the proof tree to save space.
+    
+    ~ Snippet
+    \begin{prooftree}
+      \AXC{$[\neg\A,\neg\B]^{u,v}$}
+      \AXC{$[\A\land\B]^{\tau,\sigma}$}
+      \RightLabel{$\land$E}
+      \UIC{$\A,\B$}
+      \RightLabel{$\to$E}
+      \BIC{$\bot$}
+      \LeftLabel{$\tau,\sigma$}
+      \RightLabel{$\to$I}
+      \UIC{$\neg(\A\land\B)$}
+      \AXC{$[\neg\neg(\A\land\B)]^w$}
+      \RightLabel{$\to$E}
+      \BIC{$\bot$}
+      \LeftLabel{$u,v$}
+      \RightLabel{$\to$I}
+      \UIC{$\neg\neg\A,\neg\neg\B$}
+      \AXC{}
+      \RightLabel{Ind Hyps}
+      \UIC{$\neg\neg\A\to\A,\neg\neg\B\to\B$}
+      \RightLabel{$\to$E}
+      \BIC{$\A,\B$}
+      \RightLabel{$\land$I}
+      \UIC{$\A\land\B$}
+      \LeftLabel{$w$}
+      \RightLabel{$\to$I}
+      \UIC{$\neg\neg(\A\land\B)\to(\A\land\B)$}
+    \end{prooftree}
+    ~ 
+    - By HW2.4 we only need to prove that $\mathbf{M}\vdash(\neg\neg\A\to\neg\neg\B)\to\A\to\B$.
+    ~ Snippet
+    \begin{prooftree}
+      \AXC{$[\A]^u$}
+      \AXC{$[\neg\A]^v$}
+      \RightLabel{$\to$E}
+      \BIC{$\bot$}
+      \LeftLabel{$v$}
+      \RightLabel{$\to$I}
+      \UIC{$\neg\neg\A$}
+      \AXC{$[\neg\neg\A\to\neg\neg\B]^w$}
+      \RightLabel{$\to$E}
+      \BIC{$\neg\neg\B$}
+      \AXC{}
+      \RightLabel{Ind Hyps}
+      \UIC{$\neg\neg\B\to\B$}
+      \RightLabel{$\to$E}
+      \BIC{$\B$}
+      \LeftLabel{$u$}
+      \RightLabel{$\to$E}
+      \UIC{$\A\to\B$}
+      \LeftLabel{$w$}
+      \RightLabel{$\to$I}
+      \UIC{$(\neg\neg\A\to\neg\neg\B)\to\A\to\B$}
+    \end{prooftree}
+    ~
+    - Similarly, we only prove $\mathbf{M}\vdash\forall x\neg\neg\A\to\forall x\A$ by HW2.5.
+    ~ Snippet
+    \begin{prooftree}
+      \AXC{$[\forall x\neg\neg\A]^u$}
+      \RightLabel{$\forall$E}
+      \UIC{$\neg\neg\A$}
+      \AXC{}
+      \RightLabel{Ind Hyps}
+      \UIC{$\neg\neg\A\to\A$}
+      \RightLabel{$\to$E}
+      \BIC{$\A$}
+      \RightLabel{$\forall$I}
+      \UIC{$\forall x\A$}
+      \LeftLabel{$u$}
+      \RightLabel{$\to$I}
+      \UIC{$\forall x\neg\neg\A\to\forall x\A$}
+    \end{prooftree}
+    ~
+  
+Q.E.D
+
+2. We prove that by means of induction on the conclusion. The variant of $\EFQ$ and $\RAA$ which restrict to atomic conclusions are denoted as $\EFQ^*$ and $\RAA^*$.
+
+  - **BASE** Hold by $\EFQ^*$ and $\RAA^*$.
+  - **IND HYPS($\land,\lor,\to,\forall,\exists$)** By induction hypothesis there exists a derivation of $\A$ and $\B$ from $\bot$ by using $\EFQ^*$ and from a derivation from $\neg\A$ and $\neg\B$ to $\bot$ by using $\RAA^*$, and we also denote them as $\EFQ$ and $\RAA$. Moreover, we denote the derivation from a negative assumption to the absurdity in $\RAA$ which need to be filled by the user of the rule as $\Pi$. Note that the variable substitution only affects on atomic formulas so the induction hypothesis is valid on any Gentzen-style subformula $\A[x:=a]$ of $\forall x\A$ and $\exists x\A$.
+    - $\A\land\B$
+      - $\EFQ$
+    ~ Snippet
+    \begin{prooftree}
+      \AXC{$\bot$}
+      \RightLabel{$\EFQ$}
+      \UIC{$\A,\B$}
+      \RightLabel{$\land$I}
+      \UIC{$\A\land\B$}
+    \end{prooftree}
+    ~
+      - $\RAA$
+    ~ Snippet
+    \begin{prooftree}
+      \AXC{$[\A\land\B]^{\tau,\sigma}$}
+      \RightLabel{$\land$E}
+      \UIC{$\A,\B$}
+      \AXC{$[\neg\A,\neg\B]^{u,v}$}
+      \RightLabel{$\to$E}
+      \BIC{$\bot$}
+      \LeftLabel{$\tau,\sigma$}
+      \RightLabel{$\to$I}
+      \UIC{$\neg(\A\land\B)$}
+      \noLine
+      \UIC{$\Pi$}
+      \noLine
+      \UIC{$\bot$}
+      \LeftLabel{$u,v$}
+      \RightLabel{$\RAA$}
+      \UIC{$\A,\B$}
+      \RightLabel{$\land$I}
+      \UIC{$\A\land\B$}
+    \end{prooftree}
+    ~
+    - $\A\lor\B$
+    ~ Snippet
+    \begin{prooftree}
+      \AXC{$\bot$}
+      \RightLabel{$\EFQ$}
+      \UIC{$\A$}
+      \RightLabel{$\lor$I}
+      \UIC{$\A\lor\B$}
+    \end{prooftree}
+    ~
+    - $\A\to\B$
+      - $\EFQ$
+      ~ Snippet
+      \begin{prooftree}
+        \AXC{$\bot$}
+        \RightLabel{$\EFQ$}
+        \UIC{$\B$}
+        \LeftLabel{$u$}
+        \RightLabel{$\to$I}
+        \UIC{$\A\to\B$}
+      \end{prooftree}
+      ~
+      - $\RAA$
+      ~ Snippet
+      \begin{prooftree}
+      \AXC{$[\A]^u$}
+      \AXC{$[\A\to\B]^v$}
+      \RightLabel{$\to$E}
+      \BIC{$\B$}
+      \AXC{$[\neg\B]^w$}
+      \RightLabel{$\to$E}
+      \BIC{$\bot$}
+      \LeftLabel{$v$}
+      \RightLabel{$\to$I}
+      \UIC{$\neg(\A\to\B)$}
+      \noLine
+      \UIC{$\Pi$}
+      \noLine
+      \UIC{$\bot$}
+      \RightLabel{$\RAA$}
+      \LeftLabel{$w$}
+      \UIC{$\B$}
+      \LeftLabel{$u$}
+      \RightLabel{$\to$I}
+      \UIC{$\A\to\B$}
+      \end{prooftree}
+      ~
+    - $\forall x\A$ We may need to take a fresh variable $a$ which is no free occurrence in the assumptions and $\A$ to avoid clash. Hence the proof tree is finite and the variables are at least countably many, we can always take such a variable to finish our proof.
+      - $\EFQ$
+      ~ Snippet
+      \begin{prooftree}
+      \AXC{$\bot$}
+      \RightLabel{$\EFQ$}
+      \UIC{$\A[x:=a]$}
+      \RightLabel{$\forall$I}
+      \UIC{$\forall x\A$}
+      \end{prooftree}
+      ~
+      - $\RAA$
+      ~ Snippet
+      \begin{prooftree}
+      \AXC{$[\forall x\A]^u$}
+      \RightLabel{$\forall$E}
+      \UIC{$\A[x:=a]$}
+      \AXC{$[\neg\A[x:=a]]^v$}
+      \RightLabel{$\to$E}
+      \BIC{$\bot$}
+      \LeftLabel{$u$}
+      \RightLabel{$\to$I}
+      \UIC{$\neg\forall x\A$}
+      \noLine
+      \UIC{$\Pi$}
+      \noLine
+      \UIC{$\bot$}
+      \LeftLabel{$v$}
+      \RightLabel{$\RAA$}
+      \UIC{$\A[x:=a]$}
+      \RightLabel{$\forall$I}
+      \UIC{$\forall x\A$}
+      \end{prooftree}
+      ~
+    - $\exists x\A$
+    ~ Snippet
+    \begin{prooftree}
+    \AXC{$\bot$}
+    \RightLabel{$\EFQ$}
+    \UIC{$\A[x:=t]$}
+    \RightLabel{$\exists$I}
+    \UIC{$\exists x\A$}
+    \end{prooftree}
+    ~
+  
+Q.E.D
