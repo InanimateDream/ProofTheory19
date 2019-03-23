@@ -1,0 +1,237 @@
+Title         : HW4
+Author        : Y. Konpaku
+Package       : [a4paper, margin=15mm]geometry
+Package       : bussproofs
+TeX Header    : \EnableBpAbbreviations
+Logo          : True
+
+~MathDefs
+  \newcommand\A{\varphi}
+  \newcommand\B{\psi}
+  \newcommand\CC{\chi}
+  \newcommand\GG\Gamma
+  \newcommand\D\Delta
+  \newcommand\T\Theta
+  \newcommand\TO\Rightarrow
+  \newcommand\PC[1]{\mathbf{#1}}
+~
+
+[TITLE]
+
+# QUESTION
+
+1. Prove that $\PC{G1m}\vdash\TO((((\A\B)\A)\A)\B)\B$.
+2. [*Basic Proof Theory* Ex. 3.1.3A] Prove in $\PC{G1m}$ that $\A\TO\A$ for arbitrary $\A$ from prime instances $p\TO p$.
+3. Prove that if $\PC{G1m}\vdash\GG\TO\D$ then $\D\ne\emptyset$.
+4. [Optional] Prove that if $\PC{G1[ic]}\vdash\GG\TO\D,\bot$ then $\PC{G1[ic]}\vdash\GG\TO\D$(in $\PC{G1i}$, $\D=\emptyset$).
+
+# ANSWER
+
+1.
+ ~ Snippet
+\begin{prooftree}
+\AXC{}
+\RightLabel{Ax}
+\UIC{$\A\TO\A$}
+\RightLabel{LW}
+\UIC{$\A,(\A\B)\A\TO\A$}
+\RightLabel{R$\to$}
+\UIC{$\A\TO((\A\B)\A)\A$}
+\AXC{}
+\RightLabel{Ax}
+\UIC{$\B\TO\B$}
+\RightLabel{LW}
+\UIC{$\A,\B\TO\B$}
+\RightLabel{L$\to$}
+\BIC{$(((\A\B)\A)\A)\B,\A\TO\B$}
+\RightLabel{R$\to$}
+\UIC{$(((\A\B)\A)\A)\B\TO\A\B$}
+\AXC{}
+\RightLabel{Ax}
+\UIC{$\A\TO\A$}
+\RightLabel{RW}
+\UIC{$(((\A\B)\A)\A)\B,\A\TO\A$}
+\RightLabel{L$\to$}
+\BIC{$(((\A\B)\A)\A)\B,(\A\B)\A\TO\A$}
+\RightLabel{R$\to$}
+\UIC{$(((\A\B)\A)\A)\B\TO((\A\B)\A)\A$}
+\AXC{}
+\RightLabel{Ax}
+\UIC{$\B\TO\B$}
+\RightLabel{LW}
+\UIC{$(((\A\B)\A)\A)\B,\B\TO\B$}
+\RightLabel{L$\to$}
+\BIC{$(((\A\B)\A)\A)\B,(((\A\B)\A)\A)\B\TO\B$}
+\RightLabel{LC}
+\UIC{$(((\A\B)\A)\A)\B\TO\B$}
+\RightLabel{R$\to$}
+\UIC{$\TO((((\A\B)\A)\A)\B)\B$}
+\end{prooftree}
+~
+
+2. We prove that by induction on the formation rules of the wff.
+  - **BASE** $\PC{G1m}\vdash p\TO p$ for $p=\bot$ or $p$ atomics holds by definition.
+  - **IH** By induction hypothesis $\PC{G1m}\vdash\A\TO\A$ and $\PC{G1m}\vdash\B\TO\B$ holds, we prove that we can derive $\A*\B\TO\A*\B$ for $*=\land,\lor,\to$ and $Qx\A\TO Qx\A$ for $Q=\forall,\exists$ in $\PC{G1m}$.
+    - ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\A\TO\A$}
+    \RightLabel{L$\land$}
+    \UIC{$\A\land\B\TO\A$}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\B\TO\B$}
+    \RightLabel{L$\land$}
+    \UIC{$\A\land\B\TO\B$}
+    \RightLabel{R$\land$}
+    \BIC{$\A\land\B\TO\A\land\B$}
+    \end{prooftree}
+    ~
+
+    - ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\A\TO\A$}
+    \RightLabel{R$\lor$}
+    \UIC{$\A\TO\A\lor\B$}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\B\TO\B$}
+    \RightLabel{R$\lor$}
+    \UIC{$\B\TO\A\lor\B$}
+    \RightLabel{L$\lor$}
+    \BIC{$\A\lor\B\TO\A\lor\B$}
+    \end{prooftree}
+    ~
+
+    - ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\A\TO\A$}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\B\TO\B$}
+    \RightLabel{LW}
+    \UIC{$\A,\B\TO\B$}
+    \RightLabel{L$\to$}
+    \BIC{$\A,\A\to\B\TO\B$}
+    \RightLabel{R$\to$}
+    \UIC{$\A\to\B\TO\A\to\B$}
+    \end{prooftree}
+    ~
+
+    - ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\A[x:=x]\TO\A[x:=x]$}
+    \RightLabel{L$\forall$}
+    \UIC{$\forall x\A\TO\A[x:=x]$}
+    \RightLabel{R$\forall$}
+    \UIC{$\forall x\A\TO\forall x\A$}
+    \end{prooftree}
+    ~
+
+    - ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\A[x:=x]\TO\A[x:=x]$}
+    \RightLabel{R$\exists$}
+    \UIC{$\A[x:=x]\TO\exists x\A$}
+    \RightLabel{L$\exists$}
+    \UIC{$\exists x\A\to\exists x\A$}
+    \end{prooftree}
+    ~
+
+  Q.E.D
+
+3. In this and the next question we would do induction on the formation rules of the sequent, i.e., the derivation rules of $\PC{G1[mic]}$.
+  - **BASE (Ax)** Obviously, the succedent must have exactly one formula so $\D$ can not be empty. 
+
+  - **IH** Every rule except RW and L$\to$ simply hold the cardinality of the succedent in every premises, L$\to$ holds the second and RW add exactly one formula on the right hand side so their succedent are all non-empty multiset by induction hypothesis.
+
+  Q.E.D
+
+
+4. We can prove that in $\PC{G1c}$ and $\PC{G1i}$ simultaneously and just let the induction hypothesis to be &ldquo;if $\GG\TO\D$ is derivable in $\PC{G1[ic]}$ and $\bot\in\D$, then $\GG\TO\T$ is also derivable s.t. $\bot\notin\T\land\forall\A\ne\bot(\A\in\D\to\A\in\T)$ (denoted as $\T=\D/\bot$)&rdquo;.
+
+  - **BASE (Ax, L$\bot$)** For $\bot\TO$ and $\A\TO\A(\A\ne\bot)$, the property holds vacuously. In the case of $\bot\TO\bot$, we always have $\bot\TO$ from L$\bot$.
+
+  - **IH**
+    - **L\* for $*\ne\to$** In these cases, all formulas in the succedent are side formula and the rules just simply keep them up. We can easily eliminate the $\bot$ in conclusion by apply the induction hypothesis before the application of rules. We choose L$\land$ to prove, and the others are similar.
+
+      Assume that from a derivation of $\A,\GG\TO\D$ we can conclude the existence of a derivation of $\A,\GG\TO\T$ s.t. $\T=\D/\bot$. Then we can derive $\A\land\B,\GG\TO\T$ instead of $\A\land\B,\GG\TO\D$ via the following application of L$\land$:
+      ~ Snippet
+      \begin{prooftree}
+      \AXC{}
+      \RightLabel{IH}
+      \UIC{$\A,\GG\TO\T$}
+      \RightLabel{L$\land$}
+      \UIC{$\A\land\B,\GG\TO\T$}
+      \end{prooftree}
+      ~
+
+    - **R\* for $*=\land,\lor,\to,\forall,\exists$** In these cases, since $\bot$ cannot match any principal formula in the conclusion so it can only fall into the side formulas. In $\PC{G1i}$, there is no place for side formula in the succedent and this assertion is vacuously true. In $\PC{G1c}$, applying the induction hypothesis directly may cause the corresponding rule invalid when $\bot$ is an active formula, we shall use RW to rectify that. We choose R$\land$ to prove, and the other cases are similar.
+      
+      From the induction hypothesis, we can obtain $\GG\TO\T,\A$ and $\GG\TO\T,\B$ from $\GG\TO\D,\A$ and $\GG\TO\D,\B$ s.t. $\T=\D/\bot$. Moreover, if $\A$ or $\B$ is $\bot$, we can only obtain $\GG\TO\T$. We can construct a derivation of $\GG\TO\T,\A\land\B$ from the latter by R$\land$:
+      ~ Snippet
+      \begin{prooftree}
+      \AXC{}
+      \RightLabel{IH}
+      \UIC{$\GG\TO\T$}
+      \RightLabel{RW}
+      \UIC{$\GG\TO\T,\A$}
+      \AXC{}
+      \RightLabel{IH}
+      \UIC{$\GG\TO\T,\B$}
+      \RightLabel{R$\land$}
+      \BIC{$\GG\TO\T,\A\land\B$}
+      \end{prooftree}
+      ~
+      This derivation exhibited how to handle the case that one of the active formula($\A$) is $\bot$, and the derivation for the other three cases are highly similar.
+
+    - **L$\to$** This rule is slightly different in $\PC{G1c}$ and $\PC{G1i}$. From the induction hypothesis, we can obtain $\GG\TO\T,\A$ from $\GG\TO\D,\A$ for $\A\ne\bot$ in $\PC{G1c}$, $\GG\TO\T$ from $\GG\TO\D,\A$ in $\PC{G1c}$ and $\GG\TO$ from $\GG\TO\A$ in $\PC{G1i}$ for $\A=\bot$ s.t. $\T=\D/\bot$. The second premise is similar. We choose one of these cases($\PC{G1c}$, $\A=\bot$) to prove:
+    ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\GG\TO\T$}
+    \RightLabel{RW}
+    \UIC{$\GG\TO\T,\A$}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\B,\GG\TO\T$}
+    \RightLabel{L$\to$}
+    \BIC{$\A\to\B,\GG\TO\T$}
+    \end{prooftree}
+    ~
+
+    - **RC** This rule only exists in $\PC{G1c}$. We also let $\D$ to denote the side formulas in succedent and $\T=\D/\bot$. If the principal(active) formula $\A$ is $\bot$, we can obtain $\GG\TO\T$ from $\GG\TO\D,\A,\A$ immediately. Otherwise, there exists a derivation of $\GG\TO\T,\A,\A$ from induction hypothesis and we can derive $\GG\TO\T,\A$ from it easily:
+    ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\GG\TO\T,\A,\A$}
+    \RightLabel{RW}
+    \UIC{$\GG\TO\T,\A$}
+    \end{prooftree}
+    ~
+    
+    - **RW** If the principal(weak) formula $\A$ is $\bot$, by using induction hypothesis on the premise $\GG\TO\D$ we can obtain $\GG\TO\T$ for $\T=\D/\bot$ immediately, and which is exactly what we want. Otherwise, we simply applying RW again:
+    ~ Snippet
+    \begin{prooftree}
+    \AXC{}
+    \RightLabel{IH}
+    \UIC{$\GG\TO\T$}
+    \RightLabel{RW}
+    \UIC{$\GG\TO\T,\A$}
+    \end{prooftree}
+    ~
+
+  In $\PC{G1i}$, there is at most one formula on the right hand side so we already finished the proof. In $\PC{G1c}$, we just simply applying RW finite many times to eliminate exactly one $\bot$ in the succedent and preserve the others.
+
+  Q.E.D
