@@ -1,0 +1,112 @@
+Title         : HW5
+Author        : Y. Konpaku
+Package       : [a4paper, margin=15mm]geometry
+Package       : bussproofs
+TeX Header    : \EnableBpAbbreviations
+Logo          : True
+
+~ MathDefs
+  \newcommand\A{\varphi}
+  \newcommand\B{\psi}
+  \newcommand\CC{\chi}
+  \newcommand\GG\Gamma
+  \newcommand\D\Delta
+  \newcommand\T\Theta
+  \newcommand\TO\Rightarrow
+  \newcommand\PC[1]{\mathbf{#1}}
+  \newcommand\NC\square
+  \newcommand\PB\lozenge
+~
+
+[TITLE]
+
+# QUESTION
+
+1. We say two calculi $\PC{C}$ and $\PC{D}$ are equivalent, denoted as $\PC{C}\simeq\PC{D}$, iff they derive the same set of strings. Prove that $\PC{G1s4}\simeq\PC{G1s4'}$ where $\PC{G1s4'}:=\PC{G1t}\oplus\mathrm{(R\NC)}=\PC{G1s4}\oplus\mathrm{(K\NC)}$ and $\PC{G1s4}\simeq\PC{G1s4''}$ where $\PC{G1s4''}:=\PC{G1k4}\oplus\mathrm{(L\NC)}$ if it holds or give a counterexample if not.
+
+2. Prove that $\PC{G1k4}\vdash\TO\NC\neg(\A\to\NC\A)\to\NC\bot$ and give a countermodel of $\neg\NC\neg(\A\to\NC\A)=\PB(\A\to\NC\A)$ in $\PC{K4}$.
+
+# ANSWER
+
+1. **Proof.** We simply show that $\mathrm{(K\NC)}$ is derivable from $\mathrm{(L\NC)}$ and $\mathrm{(R\NC)}$ to prove $\PC{G1s4}\simeq\PC{G1s4'}$. Similarly, we show that $\mathrm{(4\NC)}$ is derivable from $\mathrm{(L\NC)}$ and $\mathrm{(R\NC)}$ then $\mathrm{(R\NC)}$ from $\mathrm{(L\NC)}$ and $\mathrm{(4\NC)}$ to prove $\PC{G1s4}\simeq\PC{G1s4''}$.
+
+  - For any sequent with the form $\T\TO\eta$, we can derive $\NC\T\TO\NC\eta$ by following derivation, where $\mathrm{L\NC}^{|\T|}$ means applying $\mathrm{(L\NC)}$ on every formula in $\T$. This operation can always be finished since $\T$ must be finitely many. Other similar notations below have the same meaning.
+  ~ Snippet
+  \begin{prooftree}
+    \AXC{$\T\TO\eta$}
+    \RightLabel{L$\NC^{|\T|}$}
+    \UIC{$\NC\T\TO\eta$}
+    \RightLabel{R$\NC$}
+    \UIC{$\NC\T\TO\NC\eta$}
+  \end{prooftree}
+  ~
+
+  - Similarly, we derive $\mathrm{(4\NC)}$ by applying following rules on any sequent with the form $\T,\NC\T\TO\eta$.
+  ~ Snippet
+  \begin{prooftree}
+  \AXC{$\T,\NC\T\TO\eta$}
+  \RightLabel{L$\NC^{|\T|}$}
+  \UIC{$\NC\T,\NC\T\TO\eta$}
+  \RightLabel{LC$^{|\NC\T|}$}
+  \UIC{$\NC\T\TO\eta$}
+  \RightLabel{R$\NC$}
+  \UIC{$\NC\T\TO\NC\eta$}
+  \end{prooftree}
+  ~
+
+  - We only need $\mathrm{(4\NC)}$ to derive $\mathrm{(R\NC)}$.
+  ~ Snippet
+    \begin{prooftree}
+      \AXC{$\NC\T\TO\eta$}
+      \RightLabel{LW$^{|\T|}$}
+      \UIC{$\T,\NC\T\TO\eta$}
+      \RightLabel{4$\NC$}
+      \UIC{$\NC\T\TO\NC\eta$}
+    \end{prooftree}
+  ~
+  &qed;<br>
+
+2. \ 
+  - \ 
+  ~ Snippet
+  \begin{prooftree}
+  \AXC{}
+  \RightLabel{Ax}
+  \UIC{$\A\TO\A$}
+  \RightLabel{RW}
+  \UIC{$\A\TO\NC\A,\A$}
+  \RightLabel{R$\to$}
+  \UIC{$\TO\A\to\NC\A,\A$}
+  \AXC{}
+  \RightLabel{L$\bot$}
+  \UIC{$\bot\TO$}
+  \RightLabel{RW}
+  \UIC{$\bot\TO\A$}
+  \RightLabel{L$\to$}
+  \BIC{$\neg(\A\to\NC\A)\TO\A$}
+  \RightLabel{LW}
+  \UIC{$\NC\neg(\A\to\NC\A),\neg(\A\to\NC\A)\TO\A$}
+  \RightLabel{4$\NC$}
+  \UIC{$\NC\neg(\A\to\NC\A)\TO\NC\A$}
+  \RightLabel{LW}
+  \UIC{$\NC\neg(\A\to\NC\A),\A\TO\NC\A$}
+  \RightLabel{R$\to$}
+  \UIC{$\NC\neg(\A\to\NC\A)\TO\A\to\NC\A$}
+  \RightLabel{RW}
+  \UIC{$\NC\neg(\A\to\NC\A)\TO\A\to\NC\A,\bot$}
+  \AXC{}
+  \RightLabel{Ax}
+  \UIC{$\bot\TO\bot$}
+  \RightLabel{LW}
+  \UIC{$\bot,\NC\neg(\A\to\NC\A)\TO\bot$}
+  \RightLabel{L$\to$}
+  \BIC{$\NC\neg(\A\to\NC\A),\neg(\A\to\NC\A)\TO\bot$}
+  \RightLabel{4$\NC$}
+  \UIC{$\NC\neg(\A\to\NC\A)\TO\NC\bot$}
+  \RightLabel{R$\to$}
+  \UIC{$\TO\NC\neg(\A\to\NC\A)\to\NC\bot$}
+  \end{prooftree}
+  ~
+  &qed;<br>
+
+  - Consider a model contains only one point $w$ and an empty relation $\prec$, i.e., $w\nprec w$. Since $w$ has no successor, $\NC\neg(\A\to\NC\A)$ holds vacuously and its negation is false in this model.
