@@ -1,0 +1,798 @@
+\documentclass[12pt]{article}
+
+\usepackage{ebproof}
+\usepackage{tikz-cd}
+\usepackage[b4paper,margin=12mm]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+
+\newcommand\A{\varphi}
+\newcommand\B{\psi}
+\newcommand\CC{\chi}
+\newcommand\GG\Gamma
+\newcommand\D\Delta
+\newcommand\T\Theta
+\newcommand\LL\Lambda
+\newcommand\SM\Sigma
+\newcommand\PP\Pi
+\newcommand\TO\Rightarrow
+\newcommand\PC[1]{\mathbf{#1}}
+\newcommand\NC\square
+\newcommand\PB{\lozenge}
+\newcommand\FV[1]{\mathrm{FV}({#1})}
+\newcommand\R[1]{\mathrm{R^{#1}}}
+
+\newcommand\AX{\textrm{Ax}}
+\newcommand\LB{\textrm{L$\bot$}}
+\newcommand\LW{\textrm{LW}}
+\newcommand\RW{\textrm{RW}}
+\newcommand\LC{\textrm{LC}}
+\newcommand\RC{\textrm{RC}}
+\newcommand\LE{\textrm{LE}}
+\newcommand\RE{\textrm{RE}}
+\newcommand\LN{\textrm{L$\neg$}}
+\newcommand\RN{\textrm{R$\neg$}}
+\newcommand\LA{\textrm{L$\land$}}
+\newcommand\RA{\textrm{R$\land$}}
+\newcommand\LO{\textrm{L$\lor$}}
+\newcommand\RO{\textrm{R$\lor$}}
+\newcommand\LI{\textrm{L$\to$}}
+\newcommand\RI{\textrm{R$\to$}}
+\newcommand\LU{\textrm{L$\forall$}}
+\newcommand\RU{\textrm{R$\forall$}}
+\newcommand\LX{\textrm{L$\exists$}}
+\newcommand\RX{\textrm{R$\exists$}}
+\newcommand\Cut{\textrm{Cut}}
+
+
+\newcommand\CI{\textrm{$\land$I}}
+\newcommand\CE{\textrm{$\land$E}}
+\newcommand\DI{\textrm{$\lor$I}}
+\newcommand\DE{\textrm{$\lor$E}}
+\newcommand\II{\textrm{$\to$I}}
+\newcommand\IE{\textrm{$\to$E}}
+\newcommand\UI{\textrm{$\forall$I}}
+\newcommand\UE{\textrm{$\forall$E}}
+\newcommand\XI{\textrm{$\exists$I}}
+\newcommand\XE{\textrm{$\exists$E}}
+
+\newcommand\EFQ{\bot_\mathbf{i}}
+\newcommand\RAA{\bot_\mathbf{c}}
+\newcommand\PLR{\mathrm{P}}
+
+\newcommand\DT{\mathrm{DT}}
+\newcommand\DTT{\DT^{-1}}
+\newcommand\DTX[1]{\DT^{#1}}
+
+\newcommand{\asm}[1]{\delims{[}{]^{#1}}}
+
+\newcounter{thm}
+\newtheorem{lemma}[thm]{Lemma}
+
+\begin{document}
+
+\title{HW7}
+\author{Y. Konpaku}
+
+\maketitle
+
+\section{QUESTION}
+\begin{enumerate}
+\item (\emph{Basic Proof Theory} Ex. 3.3.3B) \begin{enumerate}
+    \item For $\mathrm{N}$-systems, let us write $\vdash\GG\TO\A$ if $\A$ can be deduced from assumptions in $\GG$. Let $\PC{Nc'}$ be $\PC{Nc}$ with $\RAA$ replaced by the Peirce rule $(\PLR)$, defined in 2.5.2. Show $\PC{Nc}\vdash\GG\TO\A$ iff $\PC{Nc'}\vdash\GG\TO\A$.
+    
+    \item[] In the following two pats of the exercise we extend the equivalence between $\mathrm{N}$-systems and $\mathrm{G}$-systems to fragments $\mathcal{X}$ s.t. $\{\to\}\subset\mathcal{X}\subset\{\to,\lor,\land,\forall,\exists\}$. Let $\PC{G}$ be $\mathcal{X}$-$\PC{G2c}\oplus\mathrm{(Cut)}$.
+    
+    \item If $\mathcal{S}\equiv\GG\TO\A,\D$, then a sequent $\mathcal{S}^*\equiv\GG,\D\to\A\TO\A$ is call a $1$-equivalent of $\mathcal{S}$; $\D\to\A$ abbreviates $\B_1\to\A,\B_2\to\A,\ldots,\B_n\to\A$ for $\D\equiv\B_1,\B_2,\ldots,\B_n$. Show that any two $1$-equivalents $\mathcal{S}^*$, $\mathcal{S}^{**}$ of a sequent $\mathcal{S}$ are provably equivalent in $\PC{G}$.
+    
+    \item Show that $\PC{G}\vdash\GG\TO\A$ iff $\mathcal{X}$-$\PC{Nc'}\vdash\GG\TO\A$. \emph{Hint.} For the proof from left to right, show by induction on the depth of deductions in $\PC{G}$, that whenever $\PC{G}\vdash\mathcal{S}$, then for some $1$-equivalent $\mathcal{S}^*$ of $\mathcal{S}$, $\PC{Nc}'\vdash\mathcal{S}^*$.
+\end{enumerate}
+\item (\emph{Basic Proof Theory} Ex. 3.3.3C) Prove equivalence of $\PC{G1i}$ with the Hilbert system $\PC{Hi}$ directly, that is to say, not via the equivalence of $\PC{G1i}$ with natural deduction.
+\end{enumerate}
+
+\section{ANSWER}
+
+\begin{enumerate}
+    \item \begin{enumerate}
+        \item We can prove that $(\PLR)$ is derivable from $\RAA$ directly, but it seems that we cannot derive $\RAA$ from $(\PLR)$ without $\EFQ$ (incomplete, need a proof).
+        
+        \begin{proof}
+            \begin{itemize}
+                \item $\PC{Nc}\vdash\GG\overset{\delta}{\TO}\A$ implies $\PC{Nc'}\vdash\GG\overset{\delta'}{\TO}\A$: for any sub-derivation $\delta_1$ end with $\RAA$ in $\delta$, we can convert it into a derivation $\delta_2$ which use $(\PLR)$ and $\EFQ$ instead of $\RAA$ and then formulate a new derivation $\delta'$ in $\PC{Nc'}$ by replacing every occurrence of $\delta_1$ in $\delta$ by $\delta_2$.
+                \[
+                \begin{prooftree}
+                \hypo{\neg\A}
+                \asm{u}
+                \ellipsis{$\pi$}{\bot}
+                \infer[left label=$u$]1[$\RAA$]{\A}
+                \end{prooftree}
+                \quad \rightsquigarrow \quad
+                \begin{prooftree}
+                \hypo{\neg\A}
+                \asm{u}
+                \ellipsis{$\pi$}{\bot}
+                \infer1[$\EFQ$]{\A}
+                \infer[left label=$u$]1[$\PLR$]{\A}
+                \end{prooftree}
+                \]
+                \item $\PC{Nc'}\vdash\GG\overset{\delta}{\TO}\A$ implies $\PC{Nc}\vdash\GG\overset{\delta'}{\TO}\A$: similar.
+                \[
+                \begin{prooftree}
+                \hypo{\A\to\B}
+                \asm{u}
+                \ellipsis{$\pi$}{\A}
+                \infer[left label=$u$]1[$\PLR$]{\A}
+                \end{prooftree}
+                \quad \rightsquigarrow \quad
+                \begin{prooftree}
+                \hypo{\A}
+                \asm{u}
+                \hypo{\neg\A}
+                \asm{v}
+                \infer2[$\IE$]{\bot}
+                \infer1[$\RAA$]{\B}
+                \infer[left label=$u$]1[$\II$]{\A\to\B}
+                \ellipsis{$\pi$}{\A}
+                \hypo{\neg\A}
+                \asm{v}
+                \infer2[$\IE$]{\bot}
+                \infer[left label=$v$]1[$\RAA$]{\A}
+                \end{prooftree}
+                \]
+            \end{itemize}
+        \end{proof}
+        
+        \item We prove this by showing that for any sequent $\mathcal{S}$, $\PC{G}\vdash\mathcal{S}$ iff $\PC{G}\vdash\mathcal{S}^*$ for arbitrary $\mathcal{S}^*$ which is $1$-equivalent to $\mathcal{S}$. Note that there is at least one formula on the succedent in any sequent hence we are in a fragment which does not contain $\bot$ so $(\LB)$.
+        
+        \begin{proof}
+            Let $\mathcal{S}\equiv\GG\TO\D$ and $\D\equiv\A_0,\A_1,\ldots,\A_n(n\ge0)$, we denote $\D\,\backslash\,\A_i$ as $\T_i$. We can prove that by induction on the cardinality of $\D$. Hence $\mathcal{S}\equiv\mathcal{S}^*$ for $|\D|=0$, now we show the successive case.
+            
+            \begin{itemize}
+                \item If $\PC{G}\vdash\GG\TO\D$ implies $\PC{G}\vdash\GG,\T_i\to\A_i\TO\A_i$ for arbitrary $\GG,\D$ and $0\le i\le|\D|$, then $\PC{G}\vdash\GG\overset{\delta}{\TO}\A,\D$ implies $\PC{G}\vdash\GG,\D\to\A\overset{\pi}{\TO}\A$ for arbitrary $\A$.
+                \[
+                \begin{prooftree}
+                \hypo{}
+                \ellipsis{$\delta$}{\GG\TO\A,\D}
+                \infer[double]1[$\equiv$]{\GG\TO\A,\A_i,\T_i}
+                \infer0[Ax]{\A,\GG\TO\A,\T_i}
+                \infer2[$\LI$]{\GG,\A_i\to\A\TO\A,\T_i}
+                \end{prooftree}
+                \quad \xrightarrow{\text{by IH}} \quad
+                \begin{prooftree}
+                \hypo{}
+                \ellipsis{$\pi$}{\GG,\A_i\to\A,\T_i\to\A\TO\A}
+                \infer[double]1[$\equiv$]{\GG,\D\to\A\TO\A}
+                \end{prooftree}
+                \]
+                
+                \item If $\PC{G}\vdash\GG,\T_i\to\A_i\TO\A_i,\LL$ implies $\PC{G}\vdash\GG\TO\D,\LL$ for arbitrary $\GG,\D,\LL$ and $0\le i\le|\D|$, then $\PC{G}\vdash\GG,\D\to\A\overset{\delta}{\TO}\A,\LL$ implies $\PC{G}\vdash\GG\overset{\pi}{\TO}\A,\D,\LL$ for arbitrary $\A$.
+                \[
+                \begin{prooftree}
+                \infer0[Ax]{\GG,\A_i\TO\A_i,\A}
+                \infer1[$\RI$]{\GG\TO\A_i,\A_i\to\A}
+                \hypo{}
+                \ellipsis{$\delta$}{\GG,\D\to\A\TO\A,\LL}
+                \infer[double]1[$\equiv$]{\GG,\A_i\to\A,\T_i\to\A\TO\A,\LL}
+                \infer2[Cut]{\GG,\GG,\T_i\to\A\TO\A,\A_i,\LL}
+                \infer1[$\LC^{|\GG|}$]{\GG,\T_i\to\A\TO\A,\A_i,\LL}
+                \end{prooftree}
+                \quad \xrightarrow{\text{by IH}} \quad
+                \begin{prooftree}
+                \hypo{}
+                \ellipsis{$\pi$}{\GG\TO\A,\T_i,\A_i,\LL}
+                \infer[double]1[$\equiv$]{\GG\TO\A,\D,\LL}
+                \end{prooftree}
+                \]
+            \end{itemize}
+        \end{proof}
+        
+        \item
+            We use $\GG\vdash\D$ to denote there is a $\mathcal{X}$-$\PC{Nc}'$ derivation of $\A$ from $\GG$, i.e., $\mathcal{X}$-$\PC{Nc}'\vdash\GG\TO\A$ for \emph{every}(not some!) $\A\in\D$.
+            \begin{lemma}[Weakening]\label{NW}
+            If $\GG\vdash\D$, then $\GG,\T\vdash\D$.\qed
+            \end{lemma}
+            \begin{lemma}[Contraction]\label{NC}
+            If $\GG,\GG,\T\vdash\D$, then $\GG,\T\vdash\D$.\qed
+            \end{lemma}
+            \begin{lemma}[Cut]\label{NCut}
+            If $\GG\overset{\delta}{\vdash}\D,\SM$ and $\D,\T\overset{\pi}{\vdash}\PP$, then $\GG,\T\vdash\PP$.
+            \end{lemma}
+            \begin{proof}
+                Just put $\delta_\A$ on every occurrence of $\A$ for every $\A\in\D$ in $\pi$.
+            \end{proof}
+            \begin{lemma}[Chain]\label{NChain}
+                $\D\to\A,\A\to\B\vdash\D\to\B$.
+            \end{lemma}
+            \begin{proof}
+                We use $\D$ in derivation to indicate that for every $\CC\in\D$ there exists a corresponding derivation.
+                \begin{prooftree*}
+                \hypo{\D}
+                \asm{u}
+                \infer0[Asm]{\D\to\A}
+                \infer2[$\IE$]{\A}
+                \infer0[Asm]{\A\to\B}
+                \infer2[$\IE$]{\B}
+                \infer[left label=$u$]1[$\II$]{\D\to\B}
+                \end{prooftree*}
+            \end{proof}
+            \begin{lemma}[Flip]
+                For any $\GG,\D\equiv\A_1,\ldots,\A_n$ and $\T_i\equiv\D\,\backslash\,\A_i$, $\GG,\T_i\to\A_i\vdash\A_i$ iff $\GG,\T_j\to\A_j\vdash\A_j$ for every $1\le i,j\le n$.
+            \end{lemma}
+            \begin{proof}
+            We prove that $\GG,\T_i\to\A_i\overset{\delta}{\vdash}\A_i$ implies $\GG,\T_j\to\A_j\vdash\A_j$ w.l.o.g. Note that $\A_i\to\A_j\in\T_j\to\A_j$ and $\T_j\to\A_j,\A_j\to\A_i\vdash\D\to\A_i$ from Lemma \ref{NChain} and Lemma \ref{NW}.
+            
+            \begin{prooftree*}
+            \infer0[Asm]{\GG,\T_j\to\A_j}
+            \hypo{\A_j\to\A_i}
+            \asm{u}
+            \infer2{}
+            \ellipsis{$\delta$}{\A_i}
+            \infer0[Asm]{\A_i\to\A_j}
+            \infer2[$\IE$]{\A_j}
+            \infer[left label=$u$]1[$\PLR$]{\A_j}
+            \end{prooftree*}
+            \end{proof}
+            
+        \begin{itemize}
+            \item $\PC{G}\vdash\GG\TO\A$ implies $\GG\vdash\A$:
+            
+            \begin{proof}
+            We prove the property $P(n)$ that for any sequent $\GG\TO\D$, if $\PC{G}\vdash_n\GG\TO\D$ then for some $\GG,\T_i\to\A_i\TO\A$ 1-equivalent to $\GG\TO\D$ s.t. $\GG,\T_i\to\A_i\vdash\A$ for any $n\in\omega$ by induction on the height of proofs in $\PC{G}$. Note that there is no need to consider the empty succedent for the same reason which we explains in (b).
+        
+
+            \begin{description}
+                \item[BASE (Ax)] There is only one zero-premise rule $(\AX)$ in a $\bot$-free fragment $\PC{G}$. For any sequent $\GG,\A\TO\A,\D$ introduced by $(\AX)$, we can prove $\GG,\D\to\A,\A\vdash\A$ by simply write $\A$ down as a proof.
+                
+                \item[IH]Assume that for every $\PC{G}\vdash_n\GG\TO\D$ there exist a 1-equivalent sequent $\GG,\T_i\to\A_i\TO\A_i$ s.t. $\GG,\T_i\to\A_i\vdash\A$, we prove that for every sequent with a proof which height is $n+1$ the property $P(n+1)$ holds. \begin{description}
+                    \item[(LC) and (RC)] The property $P$ holds iff the diagram commute.
+                    \[
+                    \begin{tikzcd}[sep=huge]
+                          \A,\A,\GG\TO\D
+                          \rar[leftrightarrow]{\textrm{1-equivalent}}
+                          \dar[mapsto, two heads]{\LC}
+                        & \A,\A,\GG,\T_i\to\A_i\TO\A_i
+                          \rar{\textrm{by IH}}
+                        & \A,\A,\GG,\T_i\to\A_i\vdash\A_i
+                          \dar[tail, two heads]{\textrm{Lemma \ref{NC}}}
+                        \\
+                          \A,\GG\TO\D
+                          \rar[leftrightarrow]{\textrm{1-equivalent}}
+                        & \A,\GG,\T_i\to\A_i\TO\A_i \rar[red, dashed]{P}
+                        & \A,\GG,\T_i\to\A_i\vdash\A_i
+                    \end{tikzcd}
+                    \]
+                    
+                    The case of $(\RC)$ can be similar to $(\LC)$ since we have the freedom to choose which formula in the succedent left, or we may need to prove $\vdash\A\to\A$ if we choose to preserve $\A$ on the right hand side.
+                    
+                    \item[$(\LA)$] Similar to $(\RC)$, just use Lemma \ref{NCut} and $\A_0\land\A_1\vdash\A_i$ for $i=0,1$.
+                    \item[$(\LO)$] Use (\ref{LDis}).
+                    \[
+                    \begin{tikzcd}[sep=huge]
+                        \A,\GG\TO\D \rar[leftrightarrow]{\textrm{1-equivalent}}
+                        \dar[mapsto, two heads]{\LO}
+                        & \A,\GG,\T_i\to\A_i\TO\A_i \rar{\textrm{by IH}}
+                        & \A,\GG,\T_i\to\A_i\overset{\delta}{\vdash}\A_i
+                        \dar[tail, two heads]{\textrm{(\ref{LDis})}}
+                        \\
+                        \A\lor\B,\GG\TO\D \rar[leftrightarrow]{\textrm{1-equivalent}}
+                        & \A\lor\B,\GG,\T_i\to\A_i\TO\A_i \rar[red, dashed]{P}
+                        & \A\lor\B,\GG,\T_i\to\A_i\vdash\A_i
+                        \\
+                        \B,\GG\TO\D \rar[leftrightarrow]{\textrm{1-equivalent}}
+                        \uar[mapsto, two heads]{\LO}
+                        & \B,\GG,\T_i\to\A_i\TO\A_i \rar{\textrm{by IH}}
+                        & \B,\GG,\T_i\to\A_i\overset{\pi}{\vdash}\A_i
+                        \uar[tail, two heads]{\textrm{(\ref{LDis})}}
+                    \end{tikzcd}
+                    \]
+                    \begin{equation}\label{LDis}
+                        \begin{prooftree}
+                            \infer0[Asm]{\A\lor\B}
+                            \hypo{\A}
+                            \asm{u}
+                            \infer0[Asm]{\GG,\T_i\to\A_i}
+                            \infer2{}
+                            \ellipsis{$\delta$}{\A_i}
+                            \hypo{\B}
+                            \asm{v}
+                            \infer0[Asm]{\GG,\T_i\to\A_i}
+                            \infer2{}
+                            \ellipsis{$\pi$}{\A_i}
+                            \infer[left label =${u,v}$]3[$\DE$]{\A_i}
+                        \end{prooftree}
+                    \end{equation}
+                    \item[$(\LI)$] Same as $(\RC)$, there are two kinds of possible 1-equivalent sequent of the left premise, we choose $\GG,\D\to\A\TO\A$ to simplify the proof.
+                    \[
+                    \begin{tikzcd}[sep=large]
+                    \GG\TO\D,\A
+                    \dar[mapsto, two heads]{\LI}
+                    \rar[leftrightarrow]{\textrm{1-equivalent}}
+                    & \GG,\D\to\A\TO\A \rar{\textrm{by IH}}
+                    & \GG,\D\to\A\overset{\delta}{\vdash}\A \dar[tail, two heads]{(\ref{NImpl})}
+                    \\
+                    \A\to\B,\GG\TO\D \rar[leftrightarrow]{\textrm{1-equivalent}}
+                    & \A\to\B,\GG,\T_i\to\A_i\TO\A_i \rar[red, dashed]{P}
+                    & \A\to\B,\GG,\T_i\to\A_i\vdash\A_i 
+                    \\
+                    \B,\GG\TO\D \uar[mapsto, two heads]{\LI}
+                    \rar[leftrightarrow]{\textrm{1-equivalent}}
+                    & \B,\GG,\T_i\to\A_i\TO\A_i \rar{\textrm{by IH}}
+                    & \B,\GG,\T_i\to\A_i\overset{\pi}{\vdash}\A_i \uar[tail, two heads]{\textrm{(\ref{NImpl})}}
+                    \end{tikzcd}
+                    \]
+                    \begin{equation}\label{NImpl}
+                    \begin{prooftree}
+                        \infer0[Asm]{\GG,\T_i\to\A_i}
+                        \hypo{\A_i\to\A}
+                        \asm{u}
+                        \infer2{}
+                        \ellipsis{$\delta$}{\A}
+                        \infer0[Asm]{\A\to\B}
+                        \infer2[$\IE$]{\B}
+                        \infer0[Asm]{\GG,\T_i\to\A_i}
+                        \infer2{}
+                        \ellipsis{$\pi$}{\A_i}
+                        \infer[left label=$u$]1[$\PLR$]{\A_i}
+                    \end{prooftree}
+                    \end{equation}
+                    
+                    \item[$(\LU)$] Similar to $(\LA)$, use Lemma \ref{NCut} and $\forall x\A\vdash\A[x/t]$ for arbitrary term $t$.
+                    
+                    \item[$(\LX)$] Similar to $(\LO)$, this derivation is valid because $y\notin\FV{\exists x\A}$ implies $y\not\in\FV{\A}$ or $y\equiv x$.
+                    \begin{prooftree*}
+                    \infer0[Asm]{\exists x\A}
+                    \hypo{\A[x/y]}
+                    \asm{u}
+                    \infer0[Asm]{\GG,\T_i\to\A_i}
+                    \infer2{}
+                    \ellipsis{}{\A_i}
+                    \infer[left label=$u$]2[$\XE$]{\A_i}
+                    \end{prooftree*}
+                    
+                    \item[$(\RA)$] We choose $\GG,\D\to\A\TO\A$ and $\GG,\D\to\B\TO\B$. Similar to Lemma \ref{NChain}, we first prove that $\D\to\A_0\land\A_1\vdash\D\to\A_i$ for $i=0,1$.
+                    \begin{prooftree*}
+                        \hypo{\D}
+                        \asm{u}
+                        \infer0[Asm]{\D\to\A_0\land\A_1}
+                        \infer2[$\IE$]{\A_0\land\A_1}
+                        \infer1[$\CE$]{\A_i}
+                        \infer[left label=$u$]1[$\II$]{\D\to\A_i}
+                    \end{prooftree*}
+                    
+                    Then by Lemma \ref{NCut} the following derivation is valid:
+                    \begin{prooftree*}
+                        \infer0[Asm]{\GG,\D\to\A\land\B}
+                        \ellipsis{}{\A}
+                        \infer0[Asm]{\GG,\D\to\A\land\B}
+                        \ellipsis{}{\B}
+                        \infer2[$\CI$]{\A\land\B}
+                    \end{prooftree*}
+                    
+                    \item[$(\RO)$] We choose $\GG,\D\to\A\TO\A$ to proof. Here the occurrence of $\D$ also means some $\CC\in\D$, but we ``instantiate'' and merge them in the conclusion $\D\to\A$ inside the derivation, i.e., for every $\CC\in\D$, there exists a corresponding sub-derivation of $\CC\to\A$.
+                    
+                    \begin{prooftree*}
+                    \hypo{\D}
+                    \asm{u}
+                    \infer0[Asm]{\D\to\A\lor\B}
+                    \infer2[$\IE$]{\A\lor\B}
+                    \hypo{\A}
+                    \asm{v_1}
+                    \hypo{\B}
+                    \asm{v_2}
+                    \infer1[$\DI$]{\A\lor\B}
+                    \hypo{\A\lor\B\to\A}
+                    \asm{w}
+                    \infer2[$\IE$]{\A}
+                    \infer[left label=${v_1,v_2}$]3[$\DE$]{\A}
+                    \infer[left label=$u$]1[$\II$]{\D\to\A}
+                    \infer0[Asm]{\GG}
+                    \infer2{}
+                    \ellipsis{}{\A}
+                    \infer1[$\DI$]{\A\lor\B}
+                    \infer[left label=$w$]1[$\PLR$]{\A\lor\B}
+                    \end{prooftree*}
+                    
+                    \item[$(\RI)$] Similar to $(\RO)$, we choose $\A,\GG,\D\to\B\TO\B$.
+                    
+                    \begin{prooftree*}
+                    \hypo{\A}
+                    \asm{u}
+                    \hypo{\A}
+                    \asm{u}
+                    \hypo{\D}
+                    \asm{v}
+                    \infer0[Asm]{\D\to\A\to\B}
+                    \infer2[$\IE$]{\A\to\B}
+                    \infer2[$\IE$]{\B}
+                    \infer[left label=$v$]1[$\II$]{\D\to\B}
+                    \infer0[Asm]{\GG}
+                    \infer3{}
+                    \ellipsis{}{\B}
+                    \infer[left label=$u$]1[$\II$]{\A\to\B}
+                    \end{prooftree*}
+                    
+                    \item[$(\RU)$] Similar. Note that $y\notin\FV{\forall x\A}$ implies $y\not\in\FV{\A}$ or $y\equiv x$.
+                    
+                    \begin{prooftree*}
+                    \hypo{\D}
+                    \asm{u}
+                    \infer0[Asm]{\D\to\forall x\A}
+                    \infer2[$\IE$]{\forall x\A}
+                    \infer1[$\UE$]{\A[x/y]}
+                    \infer[left label=$u$]1[$\II$]{\D\to\A[x/y]}
+                    \infer0[Asm]{\GG}
+                    \infer2{}
+                    \ellipsis{}{\A[x/y]}
+                    \infer1[$\UI$]{\forall x\A}
+                    \end{prooftree*}
+                    
+                    \item[$(\RX)$] Similar to $(\RO)$, we choose $\GG,\D\to\A[x/t]\TO\A[x/t]$ to proof and take a fresh variable $y$ s.t. $y\notin\FV{\GG,\D}$, $\FV{\A}$ and $\FV{t}$ so the existential elimination rule $(\XE)$ can be applied safely. We can always take fresh variables in every branch correspond to some $\CC\in\D$ hence $\D$ is finite.
+                    
+                    \begin{prooftree*}
+                    \hypo{\D}
+                    \asm{u}
+                    \infer0[Asm]{\D\to\exists x\A}
+                    \infer2[$\IE$]{\exists x\A}
+                    \hypo{\A[x/y]}
+                    \asm{v}
+                    \infer1[$\XI$]{\exists x\A}
+                    \hypo{\exists x\A\to\A[x/t]}
+                    \asm{w}
+                    \infer2[$\IE$]{\A[x/t]}
+                    \infer[left label=$v$]2[$\XE$]{\A[x/t]}
+                    \infer[left label=$u$]1[$\II$]{\D\to\A[x/t]}
+                    \infer0[Asm]{\GG}
+                    \infer2{}
+                    \ellipsis{}{\A[x/t]}
+                    \infer1[$\XI$]{\exists x\A}
+                    \infer[left label=$w$]1[$\PLR$]{\exists x\A}
+                    \end{prooftree*}
+                    
+                    \item[$(\Cut)$] Let the left premise be $\GG\TO\D,\A$ and the right premise be $\A,\T\TO\LL,\B$, we prove that $\GG,\D\to\A\overset{\delta}{\vdash}\A$ and $\A,\T,\LL\to\B\overset{\pi}{\vdash}\B$ implies $\GG,\T,\D\to\B,\LL\to\B\vdash\B$.
+                    
+                    \begin{prooftree*}
+                    \infer0[Asm]{\GG,\D\to\B}
+                    \hypo{\B\to\A}
+                    \asm{u}
+                    \infer2{}
+                    \ellipsis{$\delta$}{\A}
+                    \infer0[Asm]{\T,\LL\to\B}
+                    \infer2{}
+                    \ellipsis{$\pi$}{\B}
+                    \infer[left label=$u$]1[$\PLR$]{\B}
+                    \end{prooftree*}
+                \end{description}
+            \end{description}
+            \end{proof}
+            
+            \item $\GG\vdash\A$ implies $\PC{G}\vdash\GG\TO\A$:
+            \begin{proof}
+            We prove the $\mathcal{X}$-fragment of $\PC{GNc'}$, which is a sequent style natural deduction proof calculus exhibited in class replaces $\RAA$ with $\EFQ$ and $(\PLR)$, is equivalent to $\PC{G}$ by induction, where $(\PLR)$ defined as follows:
+            \begin{prooftree*}
+            \hypo{\GG,[\A\to\B]\vdash\A}
+            \infer1[$\PLR$]{\GG\vdash\A}
+            \end{prooftree*}
+            Note that $[\A]$ means one or more occurrence of $\A$ in the antecedent and the previous definition of $\vdash$ still make sense here.
+            
+            \begin{description}
+                \item[BASE (Asm)]
+                $\A\vdash\A$ implies $\A\TO\A$ by $(\AX)$.
+                \item[IH] We can use $(\LW)$ and $(\RW)$ freely since they are admissible in $\PC{G2c}$ so $\PC{G}$.
+                
+                \begin{description}
+                    \item[$(\CI)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A}
+                        \infer1[$\LW^{|\D|}$]{\GG,\D\TO\A}
+                        \hypo{}
+                        \ellipsis{IH}{\D\TO\B}
+                        \infer1[$\LW^{|\GG|}$]{\GG,\D\TO\B}
+                        \infer2[$\RA$]{\GG,\D\TO\A\land\B}
+                    \end{prooftree*}
+                    \item[$(\CE)$] We choose one case to prove, the other one is almost same.
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A\land\B}
+                        \infer0[Ax]{\A\TO\A}
+                        \infer1[$\LA$]{\A\land\B\TO\A}
+                        \infer2[Cut]{\GG\TO\A}
+                    \end{prooftree*}
+                    \item[$(\DI)$] Same as $(\CE)$. \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A}
+                        \infer1[$\RO$]{\GG\TO\A\lor\B}
+                    \end{prooftree*}
+                    \item[$(\DE)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A\lor\B}
+                        \hypo{}
+                        \ellipsis{IH}{[\A],\D\TO\CC}
+                        \infer1[$\LC^{|[\A]|}$]{\A,\D\TO\CC}
+                        \infer1[$\LW^{|\T|}$]{\A,\D,\T\TO\CC}
+                        \hypo{}
+                        \ellipsis{IH}{[\B],\T\TO\CC}
+                        \infer1[$\LC^{|[\B]|}$]{\B,\T\TO\CC}
+                        \infer1[$\LW^{|\D|}$]{\B,\D,\T\TO\CC}
+                        \infer2[$\LO$]{\A\lor\B,\D,\T\TO\CC}
+                        \infer2[Cut]{\GG,\D,\T\TO\CC}
+                    \end{prooftree*}
+                    \item[$(\II)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{[\A],\GG\TO\B}
+                        \infer1[$\LC^{|[\A]|}$]{\A,\GG\TO\B}
+                        \infer1[$\RI$]{\GG\TO\A\to\B}
+                    \end{prooftree*}
+                    \item[$(\IE)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A\to\B}
+                        \hypo{}
+                        \ellipsis{IH}{\D\TO\A}
+                        \infer1[$\RW$]{\D\TO\A,\B}
+                        \infer0[Ax]{\B,\D\TO\B}
+                        \infer2[$\LI$]{\A\to\B,\D\TO\B}
+                        \infer2[Cut]{\GG,\D\TO\B}
+                    \end{prooftree*}
+                    \item[$(\UI)$] Note that $y\equiv x$ or $y\notin\FV{\A}$ implies $y\notin\FV{\forall x\A}$ and $y\notin\FV{\exists x\A}$, this makes the derivation here and for $(\XE)$ below valid.
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A[x/y]}
+                        \infer1[$\RU$]{\GG\TO\forall x\A}
+                    \end{prooftree*}
+                    \item[$(\UE)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\forall x\A}
+                        \infer0[Ax]{\A[x/t]\TO\A[x/t]}
+                        \infer1[$\LU$]{\forall x\A\TO\A[x/t]}
+                        \infer2[Cut]{\GG\TO\A[x/t]}
+                    \end{prooftree*}
+                    \item[$(\XI)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A[x/t]}
+                        \infer1[$\RX$]{\GG\TO\exists x\A}
+                    \end{prooftree*}
+                    \item[$(\XE)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\exists x\A}
+                        \hypo{}
+                        \ellipsis{IH}{[\A[x/y]],\D\TO\B}
+                        \infer1[$\LC^{|[\A[x/y]]|}$]{\A[x/y],\D\TO\B}
+                        \infer1[$\LX$]{\exists x\A,\D\TO\B}
+                        \infer2[Cut]{\GG,\D\TO\B}
+                    \end{prooftree*}
+                    \item[$(\PLR)$] \begin{prooftree*}
+                        \infer0[Ax]{\A\TO\B,\A}
+                        \infer1[$\RI$]{\TO\A\to\B,\A}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,[\A\to\B]\TO\A}
+                        \infer1[$\LC^{|[\A\to\B]|}$]{\GG,\A\to\B\TO\A}
+                        \infer2[Cut]{\GG\TO\A,\A}
+                        \infer1[$\RW$]{\GG\TO\A}
+                    \end{prooftree*}
+                    \item[$(+)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG\TO\A}
+                        \infer1[$\LW$]{\B,\GG\TO\A}
+                    \end{prooftree*}
+                    \item[$(-)$] \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A,\A\TO\B}
+                        \infer1[$\LC$]{\GG,\A\TO\B}
+                    \end{prooftree*}
+                \end{description}
+            \end{description}
+            \end{proof}
+        \end{itemize}
+    \end{enumerate}
+    
+    \item We also prove that the sequent version of $\PC{Hi}$ is equivalent to $\PC{G1i}$ and let $\GG\vdash\A$ to denote $\PC{GHi}\vdash\GG\TO\A$. We may omit the implication operator to save space, and add any formula in the antecedent freely by $(+)$. We will use these conclusions already known:
+        \[
+        \begin{prooftree}
+        \hypo{\GG,\A\vdash\B}
+        \infer1[DT]{\GG\vdash\A\to\B}
+        \end{prooftree}
+        \quad
+        \begin{prooftree}
+        \hypo{\GG\vdash\A\to\B}
+        \infer1[$\DT^{-1}$]{\GG,\A\vdash\B}
+        \end{prooftree}
+        \]
+    Moreover, we regard $\alpha$-equivalent formulas as same one hence we already prove they are equivalent(up to provability) in $\PC{H}$ systems.
+    \begin{itemize}
+        \item $\GG\vdash\A$ implies $\PC{G1i}\vdash\GG\TO\A$: To prove that, we only need to show that all axioms in $\PC{Hi}$ is derivable in $\PC{G1i}$ since all these rules are highly similar to the corresponding rules in $\PC{Ni}$ which we already proved in previous question($(\Cut)$ is admissible in $\PC{G1i}$).
+        \begin{itemize}
+        \item \begin{prooftree*}
+            \infer0[$\LB$]{\bot\TO}
+            \infer1[RW]{\bot\TO\A}
+            \infer1[R]{\TO\bot\A}
+        \end{prooftree*}
+        \item \begin{prooftree*}
+        \infer0[Ax]{\A\TO\A}
+        \infer1[LW]{\A,\B\TO\A}
+        \infer1[R]{\A\TO\B\A}
+        \infer1[R]{\TO\A\B\A}
+        \end{prooftree*}
+        \item \begin{prooftree*}
+        \infer0[Ax]{\A\TO\A}
+        \infer1[LW]{\A\B\CC,\A\TO\A}
+        \infer0[Ax]{\A\TO\A}
+        \infer1[LW]{\A,\B\TO\A}
+        \infer0[Ax]{\B\TO\B}
+        \infer1[LW]{\A,\B\TO\B}
+        \infer0[Ax]{\CC\TO\CC}
+        \infer1[LW]{\A,\B,\CC\TO\CC}
+        \infer2[L]{\A,\B,\B\CC\TO\CC}
+        \infer2[L]{\A\B\CC,\A,\B\TO\CC}
+        \infer2[L]{\A\B\CC,\A\B,\A\TO\CC}
+        \infer1[$\R{3}$]{(\A\B\CC)(\A\B)(\A\CC)}
+        \end{prooftree*}
+        \item \[
+        \begin{prooftree}
+        \infer0[Ax]{\A\TO\A}
+        \infer1[$\RO$]{\A\TO\A\lor\B}
+        \infer1[R]{\TO\A(\A\lor\B)}
+        \end{prooftree}
+        \quad
+        \begin{prooftree}
+        \infer0[Ax]{\A\TO\A}
+        \infer1[$\LA$]{\A\land\B\TO\A}
+        \infer1[R]{\TO(\A\land\B)\A}
+        \end{prooftree}
+        \]
+        \item \begin{prooftree*}
+            \infer0[Ax]{\A\TO\A}
+            \infer1[LW]{\A,\B\CC\TO\A}
+            \infer0[Ax]{\CC\TO\CC}
+            \infer1[LW]{\A,\B\CC,\CC\TO\CC}
+            \infer2[L]{\A,\A\CC,\B\CC\TO\CC}
+            \infer0[Ax]{\B\TO\B}
+            \infer1[LW]{\B,\A\CC\TO\B}
+            \infer0[Ax]{\CC\TO\CC}
+            \infer1[LW]{\B,\A\CC,\CC\TO\CC}
+            \infer2[L]{\B,\A\CC,\B\CC\TO\CC}
+            \infer2[$\LO$]{\A\CC,\B\CC,\A\lor\B\TO\CC}
+            \infer1[$\R{3}$]{\TO(\A\CC)(\B\CC)(\A\lor\B)\CC}
+        \end{prooftree*}
+        \item \begin{prooftree*}
+            \infer0[Ax]{\A\TO\A}
+            \infer1[LW]{\A,\B\TO\A}
+            \infer0[Ax]{\B\TO\B}
+            \infer1[LW]{\A,\B\TO\B}
+            \infer2[$\RA$]{\A,\B\TO\A\land\B}
+            \infer1[$\R{2}$]{\TO\A\B(\A\land\B)}
+        \end{prooftree*}
+        \item
+        \[
+        \begin{prooftree}
+            \infer0[Ax]{\A^x_t\TO\A^x_t}
+            \infer1[$\LU$]{\forall x\A\TO\A^x_t}
+            \infer1[R]{\TO\forall x\A\to\A^x_t}
+        \end{prooftree}
+        \quad
+        \begin{prooftree}
+            \infer0[Ax]{\A^x_t\TO\A^x_t}
+            \infer1[$\RX$]{\A^x_t\TO\exists x\A}
+            \infer1[R]{\TO\A^x_t\to\exists x\A}
+        \end{prooftree}
+        \]
+        \item \begin{prooftree*}
+            \infer0[Ax]{\B\TO\B}
+            \infer0[Ax]{\A\TO\A}
+            \infer1[LW]{\B,\A\TO\A}
+            \infer2[L]{\B\A,\B\TO\A}
+            \infer1[$\LU$]{\forall x\B\A,\B\TO{\A^x_y}^y_x\equiv\A}
+            \infer1[$\RU$]{\forall x\B\A,\B\TO\forall y \A^x_y}
+            \infer1[$\R{2}$]{\TO\forall x\B\A\to\B\to\forall y\A^x_y}
+        \end{prooftree*}
+        \item \begin{prooftree*}
+            \infer0[Ax]{\A\TO\A}
+            \infer0[Ax]{\B\TO\B}
+            \infer1[LW]{\A,\B\TO\B}
+            \infer2[L]{\A\B,\A\TO\B}
+            \infer1[$\LU$]{\forall x\A\B,{\A^x_y}^y_x\equiv\A\TO\B}
+            \infer1[$\LX$]{\forall x\A\B,\exists y\A^x_y\TO\B}
+            \infer1[$\R{2}$]{\TO\forall x\A\B\to\exists y\A^x_y\to\B}
+        \end{prooftree*}
+        \end{itemize}
+        
+        \item $\PC{G1i}\vdash\GG\TO\A$ implies $\GG\vdash\A$: We only consider the sequents in $\PC{G1i}$ which has exactly one formula in the succedent, this can be done by put arbitrary formula in an empty succedent.
+        \begin{description}
+        \item[(Ax),(LW) and (LC)] Equivalent to (Asm), $(+)$ and $(-)$ respectively.
+        \item[$(\LB)$] \begin{prooftree*}
+            \infer0[Ax]{\vdash\bot\A}
+            \infer1[$\DTT$]{\bot\vdash\A}
+        \end{prooftree*}
+        \item[$(\LA)$] \begin{prooftree*}
+            \infer0[Ax]{\GG\vdash(\A\land\B)\A}
+            \infer1[$\DTT$]{\GG,\A\land\B\vdash\A}
+            \hypo{}
+            \ellipsis{IH}{\GG,\A\vdash\CC}
+            \infer1[$\DTT$]{\GG\vdash\A\CC}
+            \infer1[$(+)$]{\GG,\A\land\B\vdash\A\CC}
+            \infer2[MP]{\GG,\A\land\B\vdash\CC}
+        \end{prooftree*}
+        \item[$(\RA)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG\vdash\B}
+            \hypo{}
+            \ellipsis{IH}{\GG\vdash\A}
+            \infer0[Ax]{\GG\vdash\A\B(\A\land\B)}
+            \infer2[MP]{\GG\vdash\B(\A\land\B)}
+            \infer2[MP]{\GG\vdash\A\land\B}
+        \end{prooftree*}
+        
+        \item[$(\LO)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG,\B\vdash\CC}
+            \infer1[$\DT$]{\GG\vdash\B\CC}
+            \hypo{}
+            \ellipsis{IH}{\GG,\A\vdash\CC}
+            \infer1[$\DT$]{\GG\vdash\A\CC}
+            \infer0[Ax]{\GG\vdash(\A\CC)(\B\CC)(\A\lor\B)\CC}
+            \infer2[MP]{\GG\vdash(\B\CC)(\A\lor\B)\CC}
+            \infer2[MP]{\GG\vdash(\A\lor\B)\CC}
+            \infer1[$\DTT$]{\GG,\A\lor\B\vdash\CC}
+        \end{prooftree*}
+        \item[$(\RO)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG\vdash\A}
+            \infer0[Ax]{\GG\vdash\A(\A\lor\B)}
+            \infer2[MP]{\GG\vdash\A\lor\B}
+        \end{prooftree*}
+        
+        \item[$(\LI)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG\vdash\A}
+            \infer1[$(+)$]{\GG,\A\B\vdash\A}
+            \hypo{}
+            \ellipsis{IH}{\B,\GG\vdash\CC}
+            \infer1[$(+)$]{\A,\B,\GG\vdash\CC}
+            \infer1[$\DTX{2}$]{\GG\vdash\A\B\CC}
+            \infer0[Ax]{\GG\vdash(\A\B\CC)(\A\B)(\A\CC)}
+            \infer2[MP]{\GG\vdash(\A\B)(\A\CC)}
+            \infer1[$\DTT$]{\GG,\A\B\vdash\A\CC}
+            \infer2[MP]{\GG,\A\B\vdash\CC}
+        \end{prooftree*}
+        
+        \item[$(\RI)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG,\A\vdash\B}
+            \infer1[$\DT$]{\GG\vdash\A\B}
+        \end{prooftree*}
+        
+        \item[$(\LU)$] \begin{prooftree*}
+            \infer0[Ax]{\GG\vdash\forall x\A\to\A^x_t}
+            \infer1[$\DTT$]{\GG,\forall x\A\vdash\A^x_t}
+            \hypo{}
+            \ellipsis{IH}{\GG,\A^x_t\vdash\B}
+            \infer1[$\DT$]{\GG\vdash\A^x_t\B}
+            \infer1[$(+)$]{\GG,\forall x\A\vdash\A^x_t\B}
+            \infer2[MP]{\GG,\forall x\A\vdash\B}
+        \end{prooftree*}
+        \item[$(\RU)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG\vdash\A^x_y}
+            \infer1[$(\UI)$]{\GG\vdash\forall x{\A^x_y}^y_x\equiv\forall x\A}
+        \end{prooftree*}
+        
+        \item[$(\LX)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG,\A^x_y\vdash\B}
+            \infer1[$\DT$]{\GG\vdash\A^x_y\B}
+            \infer1[$(\UI)$]{\GG\vdash\forall x(\A^x_y\B)^y_x\overset{y\notin\FV{\B}}{\equiv}\forall x\A\B}
+            \infer0[Ax]{\GG\vdash\forall x\A\B\to\exists y\A^x_y\to\B}
+            \infer2[MP]{\GG\vdash\exists y\A^x_y\to\B\overset{y\notin\FV{\exists x\A}}{\equiv}\exists x\A\to\B}
+            \infer1[$\DTT$]{\GG,\exists x\A\vdash\B}
+        \end{prooftree*}
+        \item[$(\RX)$] \begin{prooftree*}
+            \hypo{}
+            \ellipsis{IH}{\GG\vdash\A^x_t}
+            \infer0[Ax]{\GG\vdash\A^x_t\to\exists x\A}
+            \infer2[MP]{\GG\vdash\exists x\A}
+        \end{prooftree*}
+        \end{description}
+    \end{itemize}
+\end{enumerate}
+
+\end{document} 
