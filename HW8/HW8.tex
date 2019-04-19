@@ -1,0 +1,240 @@
+\documentclass[12pt]{article}
+
+\usepackage{ebproof}
+\usepackage{tikz-cd}
+\usepackage[a4paper,margin=15mm]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\newcommand\A{\varphi}
+\newcommand\B{\psi}
+\newcommand\CC{\chi}
+\newcommand\DD{\sigma}
+\newcommand\E{\tau}
+\newcommand\GG\Gamma
+\newcommand\D\Delta
+\newcommand\T\Theta
+\newcommand\LL\Lambda
+\newcommand\SM\Sigma
+\newcommand\PP\Pi
+\newcommand\TO\Rightarrow
+\newcommand\PC[1]{\mathbf{#1}}
+\newcommand\NC\square
+\newcommand\PB{\lozenge}
+\newcommand\FV[1]{\mathrm{FV}({#1})}
+\newcommand\DEG[1]{\mathrm{deg}({#1})}
+\newcommand\RK[1]{\mathrm{rank}({#1})}
+\newcommand\R[1]{\mathrm{R^{#1}}}
+
+\newcommand\AX{\textrm{Ax}}
+\newcommand\LB{\textrm{L$\bot$}}
+\newcommand\LW{\textrm{LW}}
+\newcommand\RW{\textrm{RW}}
+\newcommand\LC{\textrm{LC}}
+\newcommand\RC{\textrm{RC}}
+\newcommand\LE{\textrm{LE}}
+\newcommand\RE{\textrm{RE}}
+\newcommand\LN{\textrm{L$\neg$}}
+\newcommand\RN{\textrm{R$\neg$}}
+\newcommand\LA{\textrm{L$\land$}}
+\newcommand\RA{\textrm{R$\land$}}
+\newcommand\LO{\textrm{L$\lor$}}
+\newcommand\RO{\textrm{R$\lor$}}
+\newcommand\LI{\textrm{L$\to$}}
+\newcommand\RI{\textrm{R$\to$}}
+\newcommand\LU{\textrm{L$\forall$}}
+\newcommand\RU{\textrm{R$\forall$}}
+\newcommand\LX{\textrm{L$\exists$}}
+\newcommand\RX{\textrm{R$\exists$}}
+\newcommand\Cut{\textrm{Cut}}
+
+
+\newcommand\CI{\textrm{$\land$I}}
+\newcommand\CE{\textrm{$\land$E}}
+\newcommand\DI{\textrm{$\lor$I}}
+\newcommand\DE{\textrm{$\lor$E}}
+\newcommand\II{\textrm{$\to$I}}
+\newcommand\IE{\textrm{$\to$E}}
+\newcommand\UI{\textrm{$\forall$I}}
+\newcommand\UE{\textrm{$\forall$E}}
+\newcommand\XI{\textrm{$\exists$I}}
+\newcommand\XE{\textrm{$\exists$E}}
+
+\newcommand\EFQ{\bot_\mathbf{i}}
+\newcommand\RAA{\bot_\mathbf{c}}
+\newcommand\PLR{\mathrm{P}}
+
+\newcommand\DT{\mathrm{DT}}
+\newcommand\DTT{\DT^{-1}}
+\newcommand\DTX[1]{\DT^{#1}}
+
+\newcommand{\asm}[1]{\delims{[}{]^{#1}}}
+
+\newcounter{thm}
+\newtheorem{lemma}[thm]{Lemma}
+
+\begin{document}
+
+\title{HW8}
+\author{Y. Konpaku}
+
+\maketitle
+
+\section{QUESTION}
+\begin{enumerate}
+    \item (\emph{Basic Proof Theory} Ex. 3.5.1A) \begin{enumerate}
+        \item Show that $\A\TO\A$ is derivable in $\PC{G3[mic]}$ for arbitrary $\A$.
+        \item Show that in $\AX$, $\LB$ in $\PC{G3cp}$ all formulas in $\GG\D$ may be taken to be atomic(prime?).
+        \item What goes wrong for full $\PC{G3c}$? And for $\PC{G3ip}$?
+    \end{enumerate}
+\end{enumerate}
+
+
+\section{ANSWER}
+
+\begin{enumerate}
+    \item \begin{enumerate}
+        \item We prove a more general form of $\A\TO\A$, which is exactly the $(\AX)$ rule in $\PC{G3[mic]}$ which permits arbitrary formula as principal formula by simply induction on the degree of complexity of formulas.
+        \begin{proof}\ 
+        \begin{description}
+                \item[BASE] $\PC{G3[mic]}\vdash\GG,p\TO p,\D$ holds by $(\AX)$ for  arbitrary $\GG,\D$ and $p$ atomic or $p\equiv\bot$ in $\PC{G3m}$ and by $(\LB)$ for $p\equiv\bot$ in $\PC{G3[ic]}$.
+                \item[IH] Assume that $\PC{G3[mic]}\vdash\SM,\A\TO\A,\PP$ and $\PC{G3[mic]}\vdash\T,\B\TO\B,\LL$ holds for arbitrary $\SM,\PP,\T$ and $\LL$, we prove that $\PC{G3[mic]}\vdash\GG,\A*\B\TO\A*\B,\D$ for $*\in\{\land,\lor,\to\}$ and $\GG,Qx\A\TO Qx\A,\D$ for $Q\in\{\forall,\exists\}$ and arbitrary $\GG,\D$.
+                \begin{itemize}
+                    \item $\A\land\B$ for $\PC{G3[mic]}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A,\B\TO\A,\D}
+                        \infer1[$\LA$]{\GG,\A\land\B\TO\A,\D}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A,\B\TO\B,\D}
+                        \infer1[$\LA$]{\GG,\A\land\B\TO\B,\D}
+                        \infer2[$\RA$]{\GG,\A\land\B\TO\A\land\B,\D}
+                    \end{prooftree}
+                    \item $\A\lor\B$ for $\PC{G3c}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A\TO\A,\B,\D}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\B\TO\A,\B,\D}
+                        \infer2[$\LO$]{\GG,\A\lor\B\TO\A,\B,\D}
+                        \infer1[$\RO$]{\GG,\A\lor\B\TO\A\lor\B,\D}
+                    \end{prooftree}
+                    \item $\A\lor\B$ for $\PC{G3[mi]}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A\TO\A}
+                        \infer1[$\RO$]{\GG,\A\TO\A\lor\B}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\B\TO\B}
+                        \infer1[$\RO$]{\GG,\B\TO\A\lor\B}
+                        \infer2[$\LO$]{\GG,\A\lor\B\TO\A\lor\B}
+                    \end{prooftree}
+                    \item $\A\to\B$ for $\PC{G3c}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A\TO\A,\B,\D}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\B,\A\TO\B,\D}
+                        \infer2[$\LI$]{\GG,\A\to\B,\A\TO\B,\D}
+                        \infer1[$\RI$]{\GG,\A\to\B\TO\A\to\B,\D}
+                    \end{prooftree}
+                    \item $\A\to\B$ for $\PC{G3[mi]}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A\to\B,\A\TO\A}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\B,\A\TO\B}
+                        \infer2[$\LI$]{\GG,\A\to\B,\A\TO\B}
+                        \infer1[$\RI$]{\GG,\A\to\B\TO\A\to\B}
+                    \end{prooftree}
+                    \item Take a fresh variable $z$ s.t. $z\notin\FV{\GG,\D}$ and $z\notin\FV{\A}$ in the case of $\forall,\exists$. Note that performing term substitutions on every occurrence of a formula in sequents does not break the derivability of the whole sequent.
+                    \item $\forall x\A$ for $\PC{G3[mic]}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\forall x\A,\A[x/z]\TO\A[x/z],\D}
+                        \infer1[$\LU$]{\GG,\forall x\A\TO\A[x/z],\D}
+                        \infer1[$\RU$]{\GG,\forall x\A\TO\forall x\A,\D}
+                    \end{prooftree}
+                    \item $\exists x\A$ for $\PC{G3c}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A[x/z]\TO\A[x/z],\exists x\A,\D}
+                        \infer1[$\RX$]{\GG,\A[x/z]\TO\exists x\A,\D}
+                        \infer1[$\LX$]{\GG,\exists x\A\TO\exists x\A,\D}
+                    \end{prooftree}
+                    \item $\exists x\A$ for $\PC{G3[mi]}$:\quad \begin{prooftree}
+                        \hypo{}
+                        \ellipsis{IH}{\GG,\A[x/z]\TO\A[x/z]}
+                        \infer1[$\RX$]{\GG,\A[x/z]\TO\exists x\A}
+                        \infer1[$\LX$]{\GG,\exists x\A\TO\exists x\A}
+                    \end{prooftree}
+                \end{itemize}
+            \end{description}
+        \end{proof}
+        
+        \item First we define the ``weakening degree'' of an initial sequent inductively.
+        \begin{itemize}
+            \item $\DEG{\GG,\A\TO\A,\D},\DEG{\GG,\bot\TO\D}=\max\{\,\DEG{\GG},\DEG{\D}\,\}$;
+            \item $\DEG{\emptyset}=0$
+            \item $\DEG{\GG}=\max\{\,\DEG{\A}\mid\A\in\GG\,\}$;
+            \item $\DEG{\A*\B}=\max\{\,\DEG{\A},\DEG{\B}\,\}+1$ for $*\in\{\land,\lor,\to\}$;
+            \item $\DEG{p},\DEG{\bot}=0$ for $p$ atomic.
+        \end{itemize}
+        
+        Then we define the ``weakening rank'' as the amount of the weakening formulas which have the maximal weakening degree.
+        \begin{itemize}
+            \item $\RK{\GG,\A\TO\A,\D},\RK{\GG,\bot\TO\D}=|\{\,\A\in\GG,\D\mid\,\DEG{\A}=\DEG{\GG,\D}\}|$.
+        \end{itemize}
+        Finally, we use $(\AX^*)$, $(\LB^*)$ and $\PC{G3cp^*}$ to denote the prime variant of $(\AX)$, $(\LB)$ and $\PC{G3cp}$ respectively.
+        \begin{proof}
+            We prove that $(\AX)$ and $(\LB)$ are derivable in $\PC{G3cp^*}$ by double induction on the weakening degree $d$ and the weakening rank $r$ of initial sequents, i.e., the transfinite induction on $\omega\cdot d+r$.
+            
+            More precisely, let $\mathcal{S}$ be an arbitrary sequent introduced by $(\AX)$ or $(\LB)$, we first prove if $\DEG{\mathcal{S}}=0$ then the using of $(\AX)$ or $(\LB)$ can be reduced to the using of $(\AX^*)$ or $(\LB^*)$ obviously. Then we prove that in the case of $d=\DEG{\mathcal{S}}>0$ if $r=\RK{\mathcal{S}}=1$(note that $r=0$ implies $d=0$) we can reduce the using of $(\AX)$ or $(\LB)$ to other sequents whose degree $d'$ is less than $d$. Otherwise, we can reduce the using of $(\AX)$ or $(\LB)$ to other sequents whose rank $r'$ is less than $r$. By induction hypothesis, this finish the proof.
+            
+            For simplifying the proof, we use $\D$ and $\E$ to indicate $\A$ and $\A$ respectively for $(\AX)$ and to indicate $\bot$ and nothing for $(\LB)$. 
+            
+            \begin{description}
+                \item[$d=0$] Any $(\AX)$-derivable sequent has degree $0$ is an instance of $(\AX^*)$, so is $(\LB)$. 
+
+                \item[$d>0$]\ \begin{description}
+                    \item[$r=1$] In this case, there is exactly one formula has the maximal degree, denoted as $\A*\B$ since $d>0$. If this formula is in antecedent, we use $\GG,\A*\B,\DD\TO\E,\D$ to indicate this case. Otherwise, we use $\GG,\DD\TO\E,\A*\B,\D$. By induction hypothesis, $\GG,\A,\B,\DD\TO\E,\A,\B,\D$ and its any ``sub-sequent'' are all derivable from $(\AX^*)$ or $(\LB^*)$ for $\DEG{\A},\DEG{\B}<\DEG{\A*\B}$ and $\DEG{\GG,\DD\TO\E,\D}<\DEG{\A*\B}$.
+                    \begin{description}
+                        \item[$(\land)$] \begin{prooftree}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\A,\B,\DD\TO\E,\D}
+                            \infer1[$\LA$]{\GG,\A\land\B,\DD\TO\E,\D}
+                        \end{prooftree}
+                        \begin{prooftree}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\DD\TO\E,\A,\D}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\DD\TO\E,\B,\D}
+                            \infer2[$\RA$]{\GG,\DD\TO\E,\A\land\B,\D}
+                        \end{prooftree}
+                        \item[$(\lor)$] \begin{prooftree}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\A,\DD\TO\E,\D}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\B,\DD\TO\E,\D}
+                            \infer2[$\LO$]{\GG,\A\lor\B,\DD\TO\E,\D}
+                        \end{prooftree}
+                        \begin{prooftree}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\DD\TO\E,\A,\B,\D}
+                            \infer1[$\RO$]{\GG,\DD\TO\E,\A\lor\B,\D}
+                        \end{prooftree}
+                        \item[$(\to)$] \begin{prooftree}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\DD\TO\E,\A,\D}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\B,\DD\TO\E,\D}
+                            \infer2[$\LI$]{\GG,\A\to\B,\DD\TO\E,\D}
+                        \end{prooftree}
+                        \begin{prooftree}
+                            \hypo{}
+                            \ellipsis{IH}{\GG,\A,\DD\TO\E,\B,\D}
+                            \infer1[$\RI$]{\GG,\DD\TO\E,\A\to\B,\D}
+                        \end{prooftree}
+                    \end{description}
+                    \item[$r>1$] In this case, there are multiple formulas have the maximal degree. We shall choose arbitrary one in it to reduce. We can reuse the same form of induction hypothesis and derivation to prove this case for $\RK{\GG,\A,\B,\DD\TO\E,\A,\B,\D}$ is also strictly less than $\RK{\GG,\A*\B,\DD\TO\E,\D}$ and $\RK{\GG,\DD\TO\E,\A*\B,\D}$ since the ranking function only counts formulas which have the maximal degree and there exists at least one formula $\CC$ s.t. $\DEG{\CC}=\DEG{\A*\B}$ but $\DEG{\A},\DEG{\B}<\DEG{\A*\B}$.
+                \end{description}
+            \end{description}
+        \end{proof}
+        
+        \item Since $(\LI)$ in $\PC{G3ip}$ and $(\LU),(\RX)$ in $\PC{G3c}$ requires same formula occurs in both conclusion sequent and premise sequent. We have no approach to reduce its complexity or something else to finish the induction. It is easy to see that if $\PC{G3ip}\vdash\GG,\A\to\B\TO\D$ then there exists at least one instance of $(\AX)$ or $(\LB)$ contains $\A\to\B$. The case of $\PC{G3c}$ is similar.
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
