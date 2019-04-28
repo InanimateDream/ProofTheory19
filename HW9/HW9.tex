@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+
+\usepackage{ebproof}
+\usepackage{tikz-cd}
+\usepackage[a4paper,margin=15mm]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\newcommand\A{\varphi}
+\newcommand\B{\psi}
+\newcommand\CC{\chi}
+\newcommand\DD{\sigma}
+\newcommand\E{\tau}
+\newcommand\GG\Gamma
+\newcommand\D\Delta
+\newcommand\T\Theta
+\newcommand\LL\Lambda
+\newcommand\SM\Sigma
+\newcommand\PP\Pi
+\newcommand\TO\Rightarrow
+\newcommand\PC[1]{\mathbf{#1}}
+\newcommand\NC\square
+\newcommand\PB{\lozenge}
+\newcommand\FV[1]{\mathrm{FV}({#1})}
+\newcommand\DEG[1]{\mathrm{deg}({#1})}
+\newcommand\RK[1]{\mathrm{rank}({#1})}
+\newcommand\R[1]{\mathrm{R^{#1}}}
+
+\newcommand\AX{\textrm{Ax}}
+\newcommand\LB{\textrm{L$\bot$}}
+\newcommand\LW{\textrm{LW}}
+\newcommand\RW{\textrm{RW}}
+\newcommand\LC{\textrm{LC}}
+\newcommand\RC{\textrm{RC}}
+\newcommand\LE{\textrm{LE}}
+\newcommand\RE{\textrm{RE}}
+\newcommand\LN{\textrm{L$\neg$}}
+\newcommand\RN{\textrm{R$\neg$}}
+\newcommand\LA{\textrm{L$\land$}}
+\newcommand\RA{\textrm{R$\land$}}
+\newcommand\LO{\textrm{L$\lor$}}
+\newcommand\RO{\textrm{R$\lor$}}
+\newcommand\LI{\textrm{L$\to$}}
+\newcommand\RI{\textrm{R$\to$}}
+\newcommand\LU{\textrm{L$\forall$}}
+\newcommand\RU{\textrm{R$\forall$}}
+\newcommand\LX{\textrm{L$\exists$}}
+\newcommand\RX{\textrm{R$\exists$}}
+\newcommand\Cut{\textrm{Cut}}
+
+
+\newcommand\CI{\textrm{$\land$I}}
+\newcommand\CE{\textrm{$\land$E}}
+\newcommand\DI{\textrm{$\lor$I}}
+\newcommand\DE{\textrm{$\lor$E}}
+\newcommand\II{\textrm{$\to$I}}
+\newcommand\IE{\textrm{$\to$E}}
+\newcommand\UI{\textrm{$\forall$I}}
+\newcommand\UE{\textrm{$\forall$E}}
+\newcommand\XI{\textrm{$\exists$I}}
+\newcommand\XE{\textrm{$\exists$E}}
+
+\newcommand\EFQ{\bot_\mathbf{i}}
+\newcommand\RAA{\bot_\mathbf{c}}
+\newcommand\PLR{\mathrm{P}}
+
+\newcommand\DT{\mathrm{DT}}
+\newcommand\DTT{\DT^{-1}}
+\newcommand\DTX[1]{\DT^{#1}}
+
+\newcommand{\asm}[1]{\delims{[}{]^{#1}}}
+
+\newcounter{thm}
+\newtheorem{lemma}[thm]{Lemma}
+
+\begin{document}
+
+\title{HW9}
+\author{Y. Konpaku}
+
+\maketitle
+
+\section{QUESTION}
+\begin{enumerate}
+    \item Prove the case of $(\LX)$ and $(\RX)$ for $\PC{G3[mi]}$ in $3.5.2(\alpha)$.
+\end{enumerate}
+
+\section{ANSWER}
+\begin{enumerate}
+    \item \begin{proof}\ 
+        \begin{description}
+            \item[$(\RX)$] For arbitrary fresh renaming $*$ free in the conclusion $\GG\TO\exists x\A$, we can find a proper renaming $**$ s.t. $\GG^{**}\equiv\GG^*$. If $*$ does not rename the bounded $x$ in $\exists x\A$, we let $**$ has the same activity on $\A$ as $*$. Then we can obtain that $(\A^x_t)^*\equiv(\A^x_t)^{**}\equiv(\A^{**})^x_t\equiv(\A^*)^x_t$ hence the effects of bounded variable renaming and term substitution are orthogonal. We can apply $(\RX)$ on $[\GG\TO\A^x_t]^{**}\equiv\GG^*\TO(\A^*)^x_t$ by induction hypothesis which concludes $\GG^*\TO\exists x\A^*\equiv[\GG\TO\exists x\A]^*$ since $\exists x\A^*\equiv(\exists x\A)^*$ for $*$ is free for $x$ in $\exists x\A$.
+            
+            Otherwise, $\exists x\A$ will be rename to $\exists y(\A^*)^x_y$ s.t. $y\not\in\FV{\A^*}=\FV{\A}$. Since $y$ is free in $\A$ we have $\A^x_t\equiv{\A^x_y}^y_t$. Then we can define $**$ as the same way and use the fact that substitution and renaming are commutable again: $[\GG\TO\A^x_t]^{**}\equiv\GG^*\TO{(\A^*)^x_y}^y_t$. If we apply $(\RX)$ on it by induction hypothesis then we can conclude $\GG^*\TO\exists y(\A^*)^x_y$, which is exactly what we want.
+            \item[$(\LX)$] The case that $*$ does not rename $x$ in $\exists x\A$ in conclusion is very similar to $(\RX)$, now we focus on the case that $(\exists x\A)^*\equiv\exists z(\A^*)^x_z$ for some $z$ fresh. Since $z$ is fresh, we have $(\A^x_y)^*\equiv(\A^*)^x_y\equiv{(\A^*)^x_z}^z_y$. We can apply $(\LX)$ on $[\GG,\A^x_y\TO\B]^{**}\equiv\GG^*,{(\A^*)^x_z}^z_y\TO\B^*$ to obtain $\GG^*,\exists z(\A^*)^x_z\TO\B^*$ because $y$ is free for $\GG,\B$ and $\exists x\A$(this implies $y\equiv x$ or $y\notin\FV{\A}=\FV{(\A^*)^x_z}$) and changing bound variables does not affect free variables.
+        \end{description}
+    \end{proof}
+\end{enumerate}
+
+\end{document}
