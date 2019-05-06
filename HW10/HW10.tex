@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+
+\usepackage{ebproof}
+\usepackage{tikz-cd}
+\usepackage[a4paper,margin=15mm]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\newcommand\A{\varphi}
+\newcommand\B{\psi}
+\newcommand\CC{\chi}
+\newcommand\DD{\sigma}
+\newcommand\E{\tau}
+\newcommand\GG\Gamma
+\newcommand\D\Delta
+\newcommand\T\Theta
+\newcommand\LL\Lambda
+\newcommand\SM\Sigma
+\newcommand\PP\Pi
+\newcommand\TO\Rightarrow
+\newcommand\PC[1]{\mathbf{#1}}
+\newcommand\NC\square
+\newcommand\PB{\lozenge}
+\newcommand\FV[1]{\mathrm{FV}({#1})}
+\newcommand\DEG[1]{\mathrm{deg}({#1})}
+\newcommand\RK[1]{\mathrm{rank}({#1})}
+\newcommand\R[1]{\mathrm{R^{#1}}}
+
+\newcommand\AX{\textrm{Ax}}
+\newcommand\LB{\textrm{L$\bot$}}
+\newcommand\LW{\textrm{LW}}
+\newcommand\RW{\textrm{RW}}
+\newcommand\LC{\textrm{LC}}
+\newcommand\RC{\textrm{RC}}
+\newcommand\LE{\textrm{LE}}
+\newcommand\RE{\textrm{RE}}
+\newcommand\LN{\textrm{L$\neg$}}
+\newcommand\RN{\textrm{R$\neg$}}
+\newcommand\LA{\textrm{L$\land$}}
+\newcommand\RA{\textrm{R$\land$}}
+\newcommand\LO{\textrm{L$\lor$}}
+\newcommand\RO{\textrm{R$\lor$}}
+\newcommand\LI{\textrm{L$\to$}}
+\newcommand\RI{\textrm{R$\to$}}
+\newcommand\LU{\textrm{L$\forall$}}
+\newcommand\RU{\textrm{R$\forall$}}
+\newcommand\LX{\textrm{L$\exists$}}
+\newcommand\RX{\textrm{R$\exists$}}
+\newcommand\KM{\textrm{K$\NC$}}
+\newcommand\LM{\textrm{L$\NC$}}
+\newcommand\RM{\textrm{R$\NC$}}
+\newcommand\FM{\textrm{4$\NC$}}
+\newcommand\Cut{\textrm{Cut}}
+
+
+\newcommand\CI{\textrm{$\land$I}}
+\newcommand\CE{\textrm{$\land$E}}
+\newcommand\DI{\textrm{$\lor$I}}
+\newcommand\DE{\textrm{$\lor$E}}
+\newcommand\II{\textrm{$\to$I}}
+\newcommand\IE{\textrm{$\to$E}}
+\newcommand\UI{\textrm{$\forall$I}}
+\newcommand\UE{\textrm{$\forall$E}}
+\newcommand\XI{\textrm{$\exists$I}}
+\newcommand\XE{\textrm{$\exists$E}}
+
+\newcommand\EFQ{\bot_\mathbf{i}}
+\newcommand\RAA{\bot_\mathbf{c}}
+\newcommand\PLR{\mathrm{P}}
+
+\newcommand\DT{\mathrm{DT}}
+\newcommand\DTT{\DT^{-1}}
+\newcommand\DTX[1]{\DT^{#1}}
+
+\newcommand{\asm}[1]{\delims{[}{]^{#1}}}
+
+\newcounter{thm}
+\newtheorem{lemma}[thm]{Lemma}
+
+\begin{document}
+
+\title{HW10}
+\author{Y. Konpaku}
+
+\maketitle
+
+\section{QUESTION}
+\begin{enumerate}
+    \item Prove the case of $(\LX)^{-1}$ and $(\RA)^{-1}$ for $\PC{G3[mic]}$ in Proposition $3.5.4$.
+    \item  \lbrack Optional\rbrack\  Show that $(\LC)$ and $(\RC)$ are both d.p.a. in $\PC{G3S4}$ and $\PC{G3K4}$.
+\end{enumerate}
+
+\section{ANSWER}
+\begin{enumerate}
+    \item \begin{proof}
+        We prove that $\vdash_n\exists x\A,\GG\TO\D$ implies $\vdash_n\A^x_y,\GG\TO\D$ for arbitrary $y\notin\FV{\GG,\D,\A}$, $|\D|\le1$ in $\PC{G3[mi]}$ and $\vdash_n\GG\TO\D,\A\land\B$ implies $\vdash_n\GG\TO\D,\A$ and $\vdash_n\GG\TO\D,\B$ for $\D$ empty in $\PC{G3[mi]}$ by induction on the height of the derivation.
+        \begin{description}
+            \item[$(\LX)^{-1}$] If $\vdash_0\exists x\A,\GG\TO\D$, then this sequent must be obtained by an application of $(\AX)$ or $(\LB)$ and $\exists x\A$ as a weakening formula. In this case, we can simply replace it by any arbitrary formula so $\A^x_y$.
+            
+            Now assume $\vdash_n\exists x\A,\GG\TO\D$ implies $\vdash_n\A^x_y,\GG\TO\D$, we prove that $\vdash_{n+1}\exists x\A,\GG\TO\D$ implies $\vdash_{n+1}\A^x_y,\GG\TO\D$. If $\exists x\A$ is the principal formula of the last rule application in the derivation $\vdash_{n+1}\exists x\A,\GG\TO\D$, i.e., there exist a variable $z\notin\FV{\GG,\D,\A}$ s.t. $\vdash_n\A^x_z,\GG\TO\D$, we can obtain $\vdash_n{\A^x_z}^z_y,\GG\TO\D$ for any fresh variable $y$ which is exactly $\A^x_y,\GG\TO\D$ since $z$ is free in $\GG,\D$ and $\A$. Otherwise, $\exists x\A$ is one of the side formulas and $\exists x\A,\GG\TO\D$ is obtained by applying some rule $\mathrm{(X)}$ on some sequent $\vdash_n\exists x\A,\GG_0\TO\D_0$ (optionally, another sequent $\vdash_n\exists x\A,\GG_1\TO\D_1$). In this case we can choose a fresh variable $z$ which is free in $\GG_0,\GG_1,\D_0,\D_1$ and $\A$ to avoid clash when applying $\mathrm{(X)}$ then use induction hypothesis to obtain $\vdash_n\A^x_z,\GG_0\TO\D_0$ and $\vdash_n\A^x_z,\GG_1\TO\D_1$ then applying $\mathrm{(X)}$ to obtain $\vdash_{n+1}\A^x_z,\GG_1\TO\D_1$. By 3.5.2$(\beta)$, we can obtain $\vdash_{n+1}\A^x_y,\GG^*\TO\D^*$ since $y$ is free in $\GG,\D,\A$ and $z$ is also free in $\A$.
+            
+            \item[$(\RA)^{-1}$] The case is very similar to $(\LX)^{-1}$, we just show that the weakening formulas can be changed arbitrarily when $n=0$, if $\A\land\B$ is principal then we choose one of the premises and using induction hypothesis otherwise.
+        \end{description}
+    \end{proof}
+    \item \begin{proof}
+            We prove that $\PC{G3[S4K4]}\vdash_n\A,\A,\GG\TO\D$ implies $\PC{G3[S4K4]}\vdash_n\A,\GG\TO\D$ and $\PC{G3[S4K4]}\vdash_n\GG\TO\D,\A,\A$ implies $\PC{G3[S4K4]}\vdash_n\GG\TO\D,\A$ (the dp-admissibility of $(\LC)$ and $(\RC)$) by induction on the height of the derivation.
+            
+            In the case of $n=0$, the only two zero-premise rules are $(\AX)$ and $(\LB)$. These two rules have no side formulas so at least one displayed $\A$ is a weakening formula. We can simply delete it without injure the validity of the application of these rules.
+            
+            Now assume that we can applying $(\LC)$ and $(\RC)$ on an $n$-height derivation and produce another $n$-height derivation, we prove that $(\LC)$ and $(\RC)$ are still valid on $n+1$-height derivation.
+            
+            For arbitrary $n+1$-height derivation whose conclusion is $\vdash_{n+1}\A,\A,\GG\TO\D$ ($\vdash_{n+1}\GG\TO\D,\A,\A$), we analyzing the actual role of the two displayed duplicate formula $\A$ in the last applied rule in derivation.
+            \begin{itemize}
+                \item There is at most one principal formula in a rule, so it is impossible that the two $\A$s are both principal formula.
+                
+                \item If one displayed $\A$ is weakening formula, just simply delete it. The new conclusion still forms a valid derivation.
+                
+                \item If the two formulas are both side formula, we can use induction hypothesis on the premise of the last rule application. The case of logical connective rules are exactly the same in proof of $\PC{G3c}$, now we show the rules of modal operator.
+                \begin{description}
+                    \item[$(\LM)$] Since the two formulas are both side formula, an application of $(\LM)$ must have this pattern:
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\NC\B,\B,\A,\A,\GG'\TO\D}
+                        \infer1[$\LM$]{\vdash_{n+1}\NC\B,\A,\A,\GG'\TO\D}
+                    \end{prooftree*}
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\NC\B,\B,\GG\TO\D',\A,\A}
+                        \infer1[$\LM$]{\vdash_{n+1}\NC\B,\GG\TO\D',\A,\A}
+                    \end{prooftree*}
+                    By using induction hypothesis, we can obtain what we want:
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\NC\B,\B,\A,\A,\GG'\TO\D}
+                        \infer1[$\LC$]{\vdash_n\NC\B,\B,\A,\GG'\TO\D}
+                        \infer1[$\LM$]{\vdash_{n+1}\NC\B,\A,\GG'\TO\D}
+                    \end{prooftree*}
+                     \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\NC\B,\B,\GG\TO\D',\A,\A}
+                        \infer1[$\LC$]{\vdash_n\NC\B,\B,\GG\TO\D',\A}
+                        \infer1[$\LM$]{\vdash_{n+1}\NC\B,\GG\TO\D,\A}
+                    \end{prooftree*}
+                    The other cases are similar.
+                    \item[$(\RM)$]
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\NC\A,\NC\A,\NC\T'\TO\B}
+                        \infer1[$\RM$]{\vdash_{n+1}\GG',\NC\A,\NC\A,\NC\T'\TO\NC\B,\D'}
+                    \end{prooftree*}
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\NC\A,\NC\A,\NC\T'\TO\B}
+                        \infer1[$\LC$]{\vdash_n\NC\A,\NC\T'\TO\B}
+                        \infer1[$\RM$]{\vdash_{n+1}\GG',\NC\A,\NC\T'\TO\NC\B,\D'}
+                    \end{prooftree*}
+                    \item[$(\FM)$]
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\A,\A,\T',\NC\A,\NC\A,\NC\T'\TO\B}
+                        \infer1[$\RM$]{\vdash_{n+1}\GG',\NC\A,\NC\A,\NC\T'\TO\NC\B,\D'}
+                    \end{prooftree*}
+                    \begin{prooftree*}
+                        \hypo{}
+                        \ellipsis{}{\vdash_n\A,\A,\T',\NC\A,\NC\A,\NC\T'\TO\B}
+                        \infer1[$\LC^2$]{\vdash_n\A,\T',\NC\A,\NC\T'\TO\B}
+                        \infer1[$\RM$]{\vdash_{n+1}\GG',\NC\A,\NC\T'\TO\NC\B,\D'}
+                    \end{prooftree*}
+                \end{description}
+                
+                \item If the one of displayed $\A$ is a principal formula and another one is a side formula, we use the corresponding inversion lemma for logical connective rules in $\PC{G3[S4K4]}$ to show the propositional case just like in $\PC{G3c}$ and prove the case of $(\LM)$(there is no principal formula and no side formula in the succedent on applications of $(\LM)$ and $(\RM),(\FM)$ resp.). Note that the inversion lemma for connectives also hold in $\PC{G3[S4K4]}$ since only $(\LM)$ permits arbitrary side formula and preserve it like the other connective rules and $(\RM)$, $(\FM)$ permits arbitrary weakening formula and the other cases are all impossible.
+                
+                Any application of $(\LM)$ whose conclusion is $\GG,\A,\A\TO\D$ and contains one $\A\equiv\NC\B$ as principal formula and another $\A$ as side formula must have this pattern:
+                \begin{prooftree*}
+                    \hypo{}
+                    \ellipsis{}{\vdash_n\B,\NC\B,\NC\B,\GG\TO\D}
+                    \infer1[$\LM$]{\vdash_{n+1}\NC\B,\NC\B,\GG\TO\D}
+                \end{prooftree*}
+                Then we prove this by simply applying induction hypothesis.
+                \begin{prooftree*}
+                    \hypo{}
+                    \ellipsis{}{\vdash_n\B,\NC\B,\NC\B,\GG\TO\D}
+                    \infer1[$\LC$]{\vdash_n\B,\NC\B,\GG\TO\D}
+                    \infer1[$\LM$]{\vdash_{n+1}\NC\B,\GG\TO\D}
+                \end{prooftree*}
+            \end{itemize}
+        \end{proof}
+\end{enumerate}
+
+\end{document}
