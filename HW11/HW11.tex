@@ -1,0 +1,110 @@
+\documentclass[12pt]{article}
+
+\usepackage{ebproof}
+\usepackage{tikz-cd}
+\usepackage[a4paper,margin=15mm]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\newcommand\A{\varphi}
+\newcommand\B{\psi}
+\newcommand\CC{\chi}
+\newcommand\DD{\sigma}
+\newcommand\E{\tau}
+\newcommand\GG\Gamma
+\newcommand\D\Delta
+\newcommand\T\Theta
+\newcommand\LL\Lambda
+\newcommand\SM\Sigma
+\newcommand\PP\Pi
+\newcommand\TO\Rightarrow
+\newcommand\PC[1]{\mathbf{#1}}
+\newcommand\NC\square
+\newcommand\PB{\lozenge}
+\newcommand\FV[1]{\mathrm{FV}({#1})}
+\newcommand\DEG[1]{\mathrm{deg}({#1})}
+\newcommand\RK[1]{\mathrm{rank}({#1})}
+\newcommand\R[1]{\mathrm{R^{#1}}}
+
+\newcommand\AX{\textrm{Ax}}
+\newcommand\LB{\textrm{L$\bot$}}
+\newcommand\LW{\textrm{LW}}
+\newcommand\RW{\textrm{RW}}
+\newcommand\LC{\textrm{LC}}
+\newcommand\RC{\textrm{RC}}
+\newcommand\LE{\textrm{LE}}
+\newcommand\RE{\textrm{RE}}
+\newcommand\LN{\textrm{L$\neg$}}
+\newcommand\RN{\textrm{R$\neg$}}
+\newcommand\LA{\textrm{L$\land$}}
+\newcommand\RA{\textrm{R$\land$}}
+\newcommand\LO{\textrm{L$\lor$}}
+\newcommand\RO{\textrm{R$\lor$}}
+\newcommand\LI{\textrm{L$\to$}}
+\newcommand\RI{\textrm{R$\to$}}
+\newcommand\LU{\textrm{L$\forall$}}
+\newcommand\RU{\textrm{R$\forall$}}
+\newcommand\LX{\textrm{L$\exists$}}
+\newcommand\RX{\textrm{R$\exists$}}
+\newcommand\KM{\textrm{K$\NC$}}
+\newcommand\LM{\textrm{L$\NC$}}
+\newcommand\RM{\textrm{R$\NC$}}
+\newcommand\FM{\textrm{4$\NC$}}
+\newcommand\Cut{\textrm{Cut}}
+
+
+\newcommand\CI{\textrm{$\land$I}}
+\newcommand\CE{\textrm{$\land$E}}
+\newcommand\DI{\textrm{$\lor$I}}
+\newcommand\DE{\textrm{$\lor$E}}
+\newcommand\II{\textrm{$\to$I}}
+\newcommand\IE{\textrm{$\to$E}}
+\newcommand\UI{\textrm{$\forall$I}}
+\newcommand\UE{\textrm{$\forall$E}}
+\newcommand\XI{\textrm{$\exists$I}}
+\newcommand\XE{\textrm{$\exists$E}}
+
+\newcommand\EFQ{\bot_\mathbf{i}}
+\newcommand\RAA{\bot_\mathbf{c}}
+\newcommand\PLR{\mathrm{P}}
+
+\newcommand\DT{\mathrm{DT}}
+\newcommand\DTT{\DT^{-1}}
+\newcommand\DTX[1]{\DT^{#1}}
+
+\newcommand{\asm}[1]{\delims{[}{]^{#1}}}
+
+\newcounter{thm}
+\newtheorem{lemma}[thm]{Lemma}
+
+\begin{document}
+
+\title{HW11}
+\author{Y. Konpaku}
+
+\maketitle
+
+\section{QUESTION}
+\begin{enumerate}
+    \item Prove the case of $(\LU)$ that one of the active formula is principal and another is side formula in previous rule application in Proposition 3.5.5 (d.p.a. of $(\LC)$ and $(\RC)$).
+    \item \lbrack Optional\rbrack (\emph{Basic Proof Theory} Ex. 3.5.11A) Prove the following simple form of \emph{Herbrand's theorem} for $\PC{G3[mic]}$: if $\GG,\D$ and $\A$ are quantifier-free, and $\vdash_n\GG,\forall x\A\TO\D$, then there are $t_1,\ldots,t_m$ such that $\vdash_n\GG,\A[x/t_1],\ldots,\A[x/t_m]\TO\D$. For $\PC{G3c}$ we also have: if $\vdash_n\GG\TO\D,\exists x\A$ then for suitable $t_1,\ldots,t_m$, $\vdash_n\GG\TO\D,\A[x/t_1],\ldots,\A[x/t_m]$.
+\end{enumerate}
+
+\section{ANSWER}
+\begin{enumerate}
+    \item We prove that $\vdash_{n+1}\GG,\forall x\A,\forall x\A\TO\D$ implies $\vdash_{n+1}\GG,\forall x\A\TO\D$ if that holds for $n$-height derivation and $\vdash_{n+1}\GG,\forall x\A,\forall x\A\TO\D$ is obtained by an application of $(\LU)$, i.e., $\vdash_n\GG,\forall x\A,\A[x/t],\forall x\A\TO\D$ for some term $t$. \begin{proof}
+        First we applying induction hypothesis on $\vdash_n\GG,\forall x\A,\A[x/t],\forall x\A\TO\D$ to obtain that $\vdash_n\GG,\forall x\A,\A[x/t]\TO\D$. Then we applying $(\LU)$ on it again to finish the proof.
+    \end{proof}
+    \item \begin{proof}
+        We prove that by induction on height of the derivation. If $\vdash_0\GG,\forall x\A\TO\D$ and $\vdash_0\GG\TO\D,\exists x\A$, then $\forall x\A$($\exists x\A$) must be the weakening formula and we can simply delete it(or replace it by $\A[x/x]$ if at least one $\A[x/t_i]$ need to be present).
+        
+        Now assume that $\vdash_n\GG,\forall x\A\TO\D$ implies $\vdash_n\GG,\A[x/t_1],\ldots,\A[x/t_m]\TO\D$ and $\vdash_n\GG\TO\D,\exists x\A$ implies $\vdash_n\GG\TO\D,\A[x/t_1],\ldots,\A[x/t_m]$ for some $t_i(1\le i\le m)$, we prove the case of $n+1$.
+        
+        If $\forall x\A$($\exists x\A$) is the principal formula, i.e., $\vdash_{n+1}\GG,\forall x\A\TO\D$($\vdash_{n+1}\GG\TO\exists x\A,\D$) is obtained by an application of $(\LU)$($(\RX)$), there must exist some term $s$ s.t. $\vdash_n\GG,\forall x\A,\A[x/s]\TO\D$($\vdash_n\GG\TO\D,\A[x/s],\exists x\A$). By induction hypothesis, there exists some term $t_i$ s.t. $\vdash_n\GG,\A[x/t_1],\ldots,\A[x/t_m],\A[x/s]\TO\D$($\vdash_n\GG\TO\D,\A[x/s],\A[x/t_1],\ldots,\A[x/t_m]$), which is what we want.
+        
+        Or if it is the case that $\forall x\A$($\exists x\A$) is a weakening formula, we can do the same thing as if $n=0$.
+        
+        Otherwise, we can simply use induction hypothesis on the premise of the last rule application then applying the corresponding rule. This rule application is always valid since $\GG$ and $\D$ are both quantifier-free so this rule cannot be a quantifier rule, introduce new terms will not break anything.
+    \end{proof}
+\end{enumerate}
+
+\end{document}
