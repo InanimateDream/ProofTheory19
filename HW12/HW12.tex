@@ -1,0 +1,185 @@
+\documentclass[12pt]{article}
+
+\usepackage{ebproof}
+\usepackage{tikz-cd}
+\usepackage[a3paper,margin=12mm]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\newcommand\A{\varphi}
+\newcommand\B{\psi}
+\newcommand\CC{\chi}
+\newcommand\DD{\sigma}
+\newcommand\E{\tau}
+\newcommand\GG\Gamma
+\newcommand\D\Delta
+\newcommand\T\Theta
+\newcommand\LL\Lambda
+\newcommand\SM\Sigma
+\newcommand\PP\Pi
+\newcommand\TO\Rightarrow
+\newcommand\PC[1]{\mathbf{#1}}
+\newcommand\NC\square
+\newcommand\PB{\lozenge}
+\newcommand\FV[1]{\mathrm{FV}({#1})}
+\newcommand\DEG[1]{\mathrm{deg}({#1})}
+\newcommand\RK[1]{\mathrm{rank}({#1})}
+\newcommand\R[1]{\mathrm{R^{#1}}}
+
+\newcommand\AX{\textrm{Ax}}
+\newcommand\LB{\textrm{L$\bot$}}
+\newcommand\LW{\textrm{LW}}
+\newcommand\RW{\textrm{RW}}
+\newcommand\LC{\textrm{LC}}
+\newcommand\RC{\textrm{RC}}
+\newcommand\LE{\textrm{LE}}
+\newcommand\RE{\textrm{RE}}
+\newcommand\LN{\textrm{L$\neg$}}
+\newcommand\RN{\textrm{R$\neg$}}
+\newcommand\LA{\textrm{L$\land$}}
+\newcommand\RA{\textrm{R$\land$}}
+\newcommand\LO{\textrm{L$\lor$}}
+\newcommand\RO{\textrm{R$\lor$}}
+\newcommand\LI{\textrm{L$\to$}}
+\newcommand\RI{\textrm{R$\to$}}
+\newcommand\LU{\textrm{L$\forall$}}
+\newcommand\RU{\textrm{R$\forall$}}
+\newcommand\LX{\textrm{L$\exists$}}
+\newcommand\RX{\textrm{R$\exists$}}
+\newcommand\KM{\textrm{K$\NC$}}
+\newcommand\LM{\textrm{L$\NC$}}
+\newcommand\RM{\textrm{R$\NC$}}
+\newcommand\FM{\textrm{4$\NC$}}
+\newcommand\Cut{\textrm{Cut}}
+
+
+\newcommand\CI{\textrm{$\land$I}}
+\newcommand\CE{\textrm{$\land$E}}
+\newcommand\DI{\textrm{$\lor$I}}
+\newcommand\DE{\textrm{$\lor$E}}
+\newcommand\II{\textrm{$\to$I}}
+\newcommand\IE{\textrm{$\to$E}}
+\newcommand\UI{\textrm{$\forall$I}}
+\newcommand\UE{\textrm{$\forall$E}}
+\newcommand\XI{\textrm{$\exists$I}}
+\newcommand\XE{\textrm{$\exists$E}}
+
+\newcommand\EFQ{\bot_\mathbf{i}}
+\newcommand\RAA{\bot_\mathbf{c}}
+\newcommand\PLR{\mathrm{P}}
+
+\newcommand\DT{\mathrm{DT}}
+\newcommand\DTT{\DT^{-1}}
+\newcommand\DTX[1]{\DT^{#1}}
+
+\newcommand{\asm}[1]{\delims{[}{]^{#1}}}
+
+\newcounter{thm}
+\newtheorem{lemma}[thm]{Lemma}
+
+\begin{document}
+
+\title{HW12}
+\author{Y. Konpaku}
+
+\maketitle
+
+\section{QUESTION}
+\begin{enumerate}
+\item Prove the case that the cut-level is greater than zero and the cut-formula is not principal in the second premise of the proof of cut-elimination in $\PC{G3[mic]}$.
+\item Prove the case that the cut-level is greater than zero and the cut-formula is introduced by $(\LX)$ and $(\RX)$ of the proof of cut-elimination in $\PC{G3[mi]}$.
+\end{enumerate}
+
+\section{ANSWER}
+
+\begin{enumerate}
+    \item\ \begin{description}
+        \item[in $\PC{G3c}$] Every $(\Cut)$ in $\PC{G3c}$ which satisfying the condition must have the following form:
+        \begin{prooftree*}
+        \hypo{}
+        \ellipsis{$\delta_0$}{\vdash_a\GG\TO\D,\A}
+        \hypo{}
+        \ellipsis{$\delta_{10}$}{\vdash_{b-1}\A,\T\TO\LL}
+        \hypo{}
+        \ellipsis{$\delta_{11}$}{\vdash_{b-1}\A,\SM\TO\PP}
+        \delims{ \left[ }{ \right] }
+        \infer2[J]{\vdash_b\A,\GG\TO\D}
+        \infer2[$\Cut^{\A}_{a+b}$]{\vdash\GG\TO\D}
+        \end{prooftree*}
+        
+        We can transform into the following proof:
+        \begin{prooftree*}
+        \hypo{}
+        \ellipsis{$\delta_0$}{\vdash_a\GG\TO\D,\A}
+        \infer1[W]{\vdash_a\GG,\T\TO\D,\LL,\A}
+        \hypo{}
+        \ellipsis{$\delta_{10}$}{\vdash_{b-1}\A,\T\TO\LL}
+        \infer1[W]{\vdash_{b-1}\A,\GG,\T\TO\D,\LL}
+        \infer2[$\Cut^{\A}_{a+b-1}$]{\GG,\T\TO\D,\LL}
+        \hypo{}
+        \ellipsis{$\delta_0$}{\vdash_a\GG\TO\D,\A}
+        \infer1[W]{\vdash_a\GG,\SM\TO\D,\PP,\A}
+        \hypo{}
+        \ellipsis{$\delta_{11}$}{\vdash_{b-1}\A,\SM\TO\PP}
+        \infer1[W]{\vdash_{b-1}\A,\GG,\SM\TO\D,\PP}
+        \infer2[$\Cut^{\A}_{a+b-1}$]{\GG,\SM\TO\D,\PP}
+        \delims{ \left[ }{ \right] }
+        \infer2[J]{\GG,\GG\TO\D,\D}
+        \infer1[C]{\GG\TO\D}
+        \end{prooftree*}
+        \item[in $\PC{G3[mi]}$]  Every $(\Cut)$ in $\PC{G3[mi]}$ which satisfying the condition must have the following form:
+        \begin{prooftree*}
+        \hypo{}
+        \ellipsis{$\delta_0$}{\vdash_a\GG\TO\A}
+        \hypo{}
+        \ellipsis{$\delta_{10}$}{\vdash_{b-1}\A,\T\TO(\theta)}
+        \hypo{}
+        \ellipsis{$\delta_{11}$}{\vdash_{b-1}\A,\SM\TO(\eta)}
+        \delims{ \left[ }{ \right] }
+        \infer2[J]{\vdash_b\A,\GG\TO(\delta)}
+        \infer2[$\Cut^{\A}_{a+b}$]{\vdash\GG\TO(\delta)}
+        \end{prooftree*}
+        
+        We can transform into the following proof:
+        \begin{prooftree*}
+        \hypo{}
+        \ellipsis{$\delta_0$}{\vdash_a\GG\TO\A}
+        \infer1[$\LW$]{\vdash_a\GG,\T\TO\A}
+        \hypo{}
+        \ellipsis{$\delta_{10}$}{\vdash_{b-1}\A,\T\TO(\theta)}
+        \infer1[LW]{\vdash_{b-1}\A,\GG,\T\TO(\theta)}
+        \infer2[$\Cut^{\A}_{a+b-1}$]{\GG,\T\TO(\theta)}
+        \hypo{}
+        \ellipsis{$\delta_0$}{\vdash_a\GG\TO\A}
+        \infer1[LW]{\vdash_a\GG,\SM\TO\A}
+        \hypo{}
+        \ellipsis{$\delta_{11}$}{\vdash_{b-1}\A,\SM\TO(\eta)}
+        \infer1[LW]{\vdash_{b-1}\A,\GG,\SM\TO(\eta)}
+        \infer2[$\Cut^{\A}_{a+b-1}$]{\GG,\SM\TO(\eta)}
+        \delims{ \left[ }{ \right] }
+        \infer2[J]{\GG,\GG\TO(\delta)}
+        \infer1[LC]{\GG\TO(\delta)}
+        \end{prooftree*}
+    \end{description}
+    \item Every $(\Cut)$ in $\PC{G3[mi]}$ which satisfying the condition must have the following form:
+    \begin{prooftree*}
+    \hypo{}
+    \ellipsis{$\delta_{00}$}{\vdash_{a-1}\GG\TO\A^x_t}
+    \infer1[$\RX$]{\vdash_a\GG\TO\exists x\A}
+    \hypo{}
+    \ellipsis{$\delta_{10}$}{\vdash_{b-1}\A^x_y,\GG\TO(\delta)}
+    \infer1[$\LX$]{\vdash_b\exists x\A,\GG\TO(\delta)}
+    \infer2[$\Cut^{\exists x\A}_{a+b}$]{\GG\TO(\delta)}
+    \end{prooftree*}
+    
+    By lemma 3.5.2($\beta$), we can obtain $\vdash_{b-1}[(\A^x_y)^y_t,\GG^y_t\TO(\delta^y_t)]^*$. And this is exactly $\vdash_{b-1}[\A^x_t,\GG\TO(\delta)]^*$ since $y$ is free in $\GG,\exists x\A(,\delta)$.
+    
+    Then we can transform the original proof to the following one:
+    \begin{prooftree*}
+    \hypo{}
+    \ellipsis{$\delta_{00},3.5.2(\alpha)$}{\vdash_{a-1}[\GG\TO\A^x_t]^*}
+    \hypo{}
+    \ellipsis{$\delta_{10},3.5.2(\beta)$}{\vdash_{b-1}[\A^x_t,\GG\TO(\delta)]^*}
+    \infer2[$\Cut^{\A^x_t}_{a+b-2}$]{[\GG\TO(\delta)]^{**}}
+    \end{prooftree*}
+\end{enumerate}
+\end{document}
